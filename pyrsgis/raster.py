@@ -1,4 +1,5 @@
 #readraster
+import gdal
 
 def read(file, band='all'):
     ds = gdal.Open(file)
