@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrsgis",
-    version="0.0.2",
+    version="0.0.3",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
-    description="Efficiently handling remotely sensed data.",
+    description="Boosting up satellite data processing.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pratkrt/Python-for-Remote-Sensing-and-GIS",

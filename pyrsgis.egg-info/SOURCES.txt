@@ -1,0 +1,8 @@
+README.md
+setup.py
+pyrsgis/__init__.py
+pyrsgis.egg-info/PKG-INFO
+pyrsgis.egg-info/SOURCES.txt
+pyrsgis.egg-info/dependency_links.txt
+pyrsgis.egg-info/top_level.txt
+pyrsgis/raster/__init__.py
