@@ -2,9 +2,9 @@
 pyrsgis.py
 Provides read and write support for ESRI Shapefiles.
 author: pratkrt<at>gmail.com
-date: 2018/12/02
-version: 0.0.2
-Compatible with Python versions 3.4
+date: 2018/12/05
+version: 0.0.3
+Compatible with Python versions 3.4.4
 """
 name = 'PyRSGIS'
 
@@ -53,7 +53,7 @@ class readtar():
             for self.files in self.filesList:
                 if (self.files[-4:] == '.TIF') or (self.files[-4:] == '.tif'):
                     self.tarTifList.append(self.files)
-            return(len(self.tarTifList))
+            return(len(self.tarTifList)-1)
 
     #This method creates a temporary directory to extract .tar.gz files
     #This section only executes if input is a tar file
