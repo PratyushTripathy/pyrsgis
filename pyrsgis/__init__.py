@@ -2,9 +2,9 @@
 pyrsgis.py
 Provides read and write support for ESRI Shapefiles.
 author: pratkrt<at>gmail.com
-date: 2018/12/05
-version: 0.0.3
-Compatible with Python versions 3.4.4
+date: 2018/12/08
+version: 0.0.4
+Compatible with Python versions 3.4
 """
 name = 'PyRSGIS'
 
