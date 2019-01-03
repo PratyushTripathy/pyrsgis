@@ -11,12 +11,13 @@ def read(file, band='all'):
         band = band.ReadAsArray()
     return(ds, band)
 
-def export(band, ds, filename='outFile.tif', dtype='int'):
+def export(band, ds, filename='outFile.tif', dtype='int', bands=1):
+    row, col = band.shape
     driver = gdal.GetDriverByName("GTiff")
     if dtype == 'float':
-            outdata = driver.Create(filename, col, row, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
+            outdata = driver.Create(filename, col, row, bands, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
     elif dtype == 'int':
-            outdata = driver.Create(filename, col, row, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
+            outdata = driver.Create(filename, col, row, bands, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
     outdata.SetGeoTransform(ds.GetGeoTransform())
     outdata.SetProjection(ds.GetProjection())
     outdata.GetRasterBand(1).WriteArray(band)
