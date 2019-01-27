@@ -15,7 +15,7 @@ Make sure your current working directory is the same where the raster files are 
 
 Please skip the above two lines of code if the directory is already set to the files location.<br/>
 To read the TAR file directly:<br>
-`yourData` = rg.readtar("yourFilename.tar.gz")<br/>
+`yourData = rg.readtar("yourFilename.tar.gz")<br/>`
 
 Similarly, stacked TIFF file can be read:<br/>
 `yourData = rg.readtif("yourFilename.tif")`<br/>
@@ -40,8 +40,7 @@ Any particular band can be extarcted using:<br/>
 
 The above code returns the band as array which can be visualised using:<br/>
 `display(yourBand)`<br/>
-or
-`display(yourData.getband(bandNumber))`<br/>
+or, `display(yourData.getband(bandNumber))`<br/>
 The map can directly be saved as an image.<br/>
 
 Map title can also be assigned:<br/>
