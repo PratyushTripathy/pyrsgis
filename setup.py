@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrsgis",
-    version="0.0.10",
+    version="0.1.3",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
-    description="Simplifying satellite data processing.",
+    description="Processing satellite data directly from TAR files.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pratkrt/Python-for-Remote-Sensing-and-GIS",
@@ -16,6 +16,6 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Microsoft :: Windows :: Windows 8.1",
+        "Operating System :: Microsoft :: Windows",
     ],
 )

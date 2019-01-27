@@ -2,9 +2,9 @@
 pyrsgis.py
 Provides read and write support for ESRI Shapefiles.
 author: pratkrt<at>gmail.com
-date: 2018/12/08
-version: 0.0.4
-Compatible with Python versions 3.4
+date: 2019/01/27
+version: 0.1.3
+Compatible with Python versions 3+
 """
 name = 'PyRSGIS'
 
@@ -41,6 +41,7 @@ class readtar():
             self.bandIndex = self.checkBandIndex()
         else:
             self.type = "Unidentified data format"
+            print("Warning! Expected file type is .tar.gz")
 
     #This method reads the TAR file and returns the number of TIFF files in it          
     def initiateTAR(self):
@@ -59,11 +60,17 @@ class readtar():
     #This section only executes if input is a tar file
     def createTempDirectory(self):
         try:
-            self.tempDir = None
-            self.tempDir = tempfile.TemporaryDirectory('pyrsgis')
-            self.tempDirPath = str(self.tempDir).split(" ")[1]
-            self.tempDirPath = self.tempDirPath[1:-2]
-##          print("Temporary directory created in \n%s" % self.tempDirPath)
+            self.tempDirPath = None
+            self.tempDirPath = tempfile.TemporaryDirectory('pyrsgis')
+            self.tempDir = str(self.tempDirPath).split(" ")[1]
+            self.tempDir = self.tempDir[1:-2]
+            self.tempDir = self.tempDir.split("\\\\")
+            self.tempDirPath = self.tempDir
+            self.tempDir[-1] = 'pyrsgis'
+            self.tempDir = "\\\\".join(self.tempDir)
+            self.tempDirPath.pop()
+            self.tempDirPath = "\\\\".join(self.tempDirPath)
+##          print("Temporary directory created in \n%s" % self.tempDir)
         except FileNotFoundError:
             pass
 
@@ -91,7 +98,9 @@ class readtar():
         if self.type == "TARfile":
             with tarfile.open(self.name, 'r:gz') as self.tar:
                 self.createTempDirectory()
-                os.chdir(self.tempDirPath)
+                if not os.path.exists(self.tempDir):
+                    os.mkdir(self.tempDir)
+                os.chdir(self.tempDir)
                 self.tar.extractall(members=self.generatorTAR(nBand))
             self.ds = gdal.Open(self.createdFile[0])
             self.band = self.ds.GetRasterBand(1)
@@ -106,7 +115,7 @@ class readtar():
             self.ds = None
             # Goes back to the old directory and deletes the temporary directory
             os.chdir(self.oldDir)
-            shutil.rmtree(self.tempDirPath)
+            self.clearMemory()
             return(self.band)
 
     #This method calculates the normalised differnce of any two given bands  
@@ -124,25 +133,14 @@ class readtar():
             self.band2 = self.getband(band2)
             return((self.band2-self.band1)/(self.band2+self.band1))
 
-    #This method shows the band using matplotlib
-    def display(self, band, cmap='PRGn'):
-        plt.title(self.satellite, fontsize=20)
-        self.legend = cm.ScalarMappable(cmap=cmap)
-        self.legend.set_array(np.array([band.min(), band.min()+band.max()/2, band.max()]))
-        plt.colorbar(self.legend)
-        plt.imshow(band, cmap=cmap)
-        self.scalebar = ScaleBar(30)
-        plt.gca().add_artist(self.scalebar)
-        plt.show()
-
     #This method saves the processed image in the drive  
-    def export(self, array, outFilename, arrtype='float'):
+    def export(self, array, outfile='pyrsgisRaster.tif', datatype='int'):
         self.array = array
         self.driver = gdal.GetDriverByName("GTiff")
-        if arrtype == 'float':
-            self.outdata = self.driver.Create(outFilename, self.cols, self.rows, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
-        elif arrtype == 'int':
-            self.outdata = self.driver.Create(outFilename, self.cols, self.rows, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
+        if datatype == 'float':
+            self.outdata = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
+        elif datatype == 'int':
+            self.outdata = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
         self.outdata.SetGeoTransform(self.geotransform)##sets same geotransform as input
         self.outdata.SetProjection(self.projection)##sets same projection as input
         self.outdata.GetRasterBand(1).WriteArray(self.array)
@@ -151,13 +149,15 @@ class readtar():
         self.outdata = None
 
     #This method clears everything stored in the virtual momry to reduce load   
-    def clear(self):
-        self.band = None
-        self.tempDir = None
-
+    def clearMemory(self):
+        os.chdir(self.tempDirPath)
+        for folder in glob.glob("*pyrsgis"):
+            shutil.rmtree(folder)
+        os.chdir(self.oldDir)
+        
     #This method decides the index of the bands depending on the sensor type
     def checkBandIndex(self):
-        if self.satellite == 'Landsat - 5':
+        if self.satellite == 'Landsat - 4/5  TM':
             return({'blue':1,
                     'green':2,
                     'red':3,
@@ -191,11 +191,11 @@ class readtar():
     #This method decides the satellite sensor, depending on the number of bands
     def sensor(self):
         try:
-            if (self.type == "TARfile") and (self.nbands == 8):
-                return('Landsat - 5')
-            elif (self.type == "TARfile") and (self.nbands == 10):
+            if (self.type == "TARfile") and (self.nbands == 7):
+                return('Landsat - 4/5  TM')
+            elif (self.type == "TARfile") and (self.nbands == 9):
                 return('Landsat - 7')
-            elif (self.type == "TARfile") and (self.nbands) == 12:
+            elif (self.type == "TARfile") and (self.nbands) == 11:
                 return('Landsat - 8')
         except:
             print('Warning! Input data has no match in the inventory')        
@@ -233,7 +233,7 @@ class readtif():
         if datatype == 'float':
             self.band = self.band.astype(float)
         else:
-            self.band = self.band.astype(int)
+            pass
         if self.initiated == False:
             self.rows = self.ds.RasterYSize
             self.cols = self.ds.RasterXSize
@@ -252,25 +252,14 @@ class readtif():
         self.band2 = self.band2.astype(float)
         return((self.band2-self.band1)/(self.band2+self.band1))
 
-    #This method shows the band using matplotlib
-    def display(self, band, cmap='PRGn'):
-        plt.title(self.satellite, fontsize=20)
-        self.legend = cm.ScalarMappable(cmap=cmap)
-        self.legend.set_array(np.array([band.min(), band.min()+band.max()/2, band.max()]))
-        plt.colorbar(self.legend)
-        plt.imshow(band, cmap=cmap)
-        self.scalebar = ScaleBar(30)
-        plt.gca().add_artist(self.scalebar)
-        plt.show()
-
     #This method saves the processed image in the drive  
-    def export(self, array, outFilename, datatype='int'):
+    def export(self, array, outfile='pyrsgisRaster.tif', datatype='int'):
         self.array = array
         self.driver = gdal.GetDriverByName("GTiff")
         if datatype == 'float':
-            self.outds = self.driver.Create(outFilename, self.cols, self.rows, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
+            self.outds = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
         elif datatype == 'int':
-            self.outds = self.driver.Create(outFilename, self.cols, self.rows, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
+            self.outds = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
         self.outds.SetGeoTransform(self.geotransform)##sets same geotransform as input
         self.outds.SetProjection(self.projection)##sets same projection as input
         self.outds.GetRasterBand(1).WriteArray(self.array)
@@ -279,12 +268,13 @@ class readtif():
         self.outds = None
 
     #This method clears everything stored in the virtual momry to reduce load   
-    def clear(self):
+    def clearMemory(self):
         self.band = None
-
+        self.ds = None
+        
     #This method decides the index of the bands depending on the sensor type
     def checkBandIndex(self):
-        if self.satellite == 'Landsat - 5':
+        if self.satellite == 'Landsat - 4/5  TM':
             return({'blue':1,
                     'green':2,
                     'red':3,
@@ -319,7 +309,7 @@ class readtif():
     def sensor(self):
         try:
             if (self.nbands == 7):
-                return('Landsat - 5')
+                return('Landsat - 4/5  TM')
             elif (self.nbands == 8):
                 return('Landsat - 7')
             elif (self.nbands) == 11:
@@ -341,3 +331,17 @@ class readtif():
         self.nirband = None
         return(self.ndviband)
 
+def radioCorrection(band, maxVal=255):
+    band = np.nan_to_num(band)
+    return((band-band.min())/(band.max()-band.min())*maxVal)
+
+#This method shows the band using matplotlib
+def display(band, maptitle = 'Pyrsgis Raster', cmap='PRGn'):
+    plt.title(maptitle, fontsize=20)
+    self.legend = cm.ScalarMappable(cmap=cmap)
+    self.legend.set_array(np.array([band.min(), band.min()+band.max()/2, band.max()]))
+    plt.colorbar(self.legend)
+    plt.imshow(band, cmap=cmap)
+    self.scalebar = ScaleBar(30)
+    plt.gca().add_artist(self.scalebar)
+    plt.show()
