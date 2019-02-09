@@ -1,13 +1,15 @@
 Metadata-Version: 2.1
 Name: pyrsgis
-Version: 0.1.3
+Version: 0.1.5
 Summary: Processing satellite data directly from TAR files.
 Home-page: https://github.com/pratkrt/Python-for-Remote-Sensing-and-GIS
 Author: Pratyush Tripathy
 Author-email: pratkrt@gmail.com
 License: UNKNOWN
 Description: # Python-for-Remote-Sensing-and-GIS
-        PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. 
+        PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support.
+        
+        DOI: https://doi.org/10.5281/zenodo.2552934
         
         The module is capable of processing Landsat data from the downloaded TAR files itself.
         
@@ -23,7 +25,7 @@ Description: # Python-for-Remote-Sensing-and-GIS
         
         Please skip the above two lines of code if the directory is already set to the files location.<br/>
         To read the TAR file directly:<br>
-        `yourData` = rg.readtar("yourFilename.tar.gz")<br/>
+        `yourData = rg.readtar("yourFilename.tar.gz")`<br/>
         
         Similarly, stacked TIFF file can be read:<br/>
         `yourData = rg.readtif("yourFilename.tif")`<br/>
@@ -73,6 +75,7 @@ Description: # Python-for-Remote-Sensing-and-GIS
         Be careful that the NDVI is of float datatype, whereas the raw bands are integer datatype. Float data export uses more space on hard drive, so the default has been set to integer. Therefore, to export any float datatype, the argument should be passed explicitly.
         
 Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: Microsoft :: Windows

@@ -1,12 +1,12 @@
 """
 pyrsgis.py
-Provides read and write support for ESRI Shapefiles.
 author: pratkrt<at>gmail.com
-date: 2019/01/27
-version: 0.1.3
+date: 2019/02/09
+version: 0.1.5
 Compatible with Python versions 3+
 """
 name = 'PyRSGIS'
+__version__ = "0.1.5"
 
 #Importing all the necessary libraries
 import os, glob, datetime
@@ -23,6 +23,12 @@ warnings.filterwarnings("ignore")
 
 #This creates a class for raster, and based on the format of input
 #it decides whether input is stacked raster data or .tar.gz file
+
+class createDS():
+
+    def __init__(self, ds):
+        self.GetProjection = ds.GetProjection()
+        self.GetGeoTransform = ds.GetGeoTransform()
 
 class readtar():
     oldDir = os.getcwd()
@@ -112,7 +118,7 @@ class readtar():
                 self.projection = self.ds.GetProjection()
                 self.geotransform = self.ds.GetGeoTransform()
                 self.initiated = True
-            self.ds = None
+            self.ds = createDS(self.ds)
             # Goes back to the old directory and deletes the temporary directory
             os.chdir(self.oldDir)
             self.clearMemory()
