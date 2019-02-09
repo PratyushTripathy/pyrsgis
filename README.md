@@ -1,5 +1,7 @@
 # Python-for-Remote-Sensing-and-GIS
-PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. DOI: https://doi.org/10.5281/zenodo.2552934
+PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. Please do not use this software for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support.
+
+DOI: https://doi.org/10.5281/zenodo.2552934
 
 The module is capable of processing Landsat data from the downloaded TAR files itself.
 
