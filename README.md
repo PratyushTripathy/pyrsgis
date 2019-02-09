@@ -6,6 +6,7 @@ DOI: https://doi.org/10.5281/zenodo.2552934
 The module is capable of processing Landsat data from the downloaded TAR files itself.
 
 Please find few example below:
+`pip install pyrsgis`
 
 Let's import the module by using the below code<br/>
 `import pyrsgis as rg`
