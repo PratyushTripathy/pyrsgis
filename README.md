@@ -1,5 +1,5 @@
 # Python-for-Remote-Sensing-and-GIS
-PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. Please do not use this software for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support.
+PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support.
 
 DOI: https://doi.org/10.5281/zenodo.2552934
 
@@ -17,7 +17,7 @@ Make sure your current working directory is the same where the raster files are 
 
 Please skip the above two lines of code if the directory is already set to the files location.<br/>
 To read the TAR file directly:<br>
-`yourData` = rg.readtar("yourFilename.tar.gz")<br/>
+`yourData = rg.readtar("yourFilename.tar.gz")`<br/>
 
 Similarly, stacked TIFF file can be read:<br/>
 `yourData = rg.readtif("yourFilename.tif")`<br/>
