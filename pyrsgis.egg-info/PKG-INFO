@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyrsgis
-Version: 0.1.5
+Version: 0.1.8
 Summary: Processing satellite data directly from TAR files.
 Home-page: https://github.com/pratkrt/Python-for-Remote-Sensing-and-GIS
 Author: Pratyush Tripathy

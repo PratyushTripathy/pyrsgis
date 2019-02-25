@@ -1,23 +1,27 @@
 """
 pyrsgis.py
 author: pratkrt<at>gmail.com
-date: 2019/02/09
-version: 0.1.5
+date: 2019/02/23
+version: 0.1.8
 Compatible with Python versions 3+
 """
 name = 'PyRSGIS'
-__version__ = "0.1.5"
+__version__ = "0.1.8"
 
 #Importing all the necessary libraries
 import os, glob, datetime
 import gdal
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-from matplotlib_scalebar.scalebar import ScaleBar
 import numpy as np
 import warnings, shutil
 import tarfile, tempfile
 
+try:
+    from matplotlib_scalebar.scalebar import ScaleBar
+except:
+    print("Warning! matplotlib_scalebar library not found.")
+    
 #Disabling annoying warnings
 warnings.filterwarnings("ignore")
 
@@ -27,8 +31,18 @@ warnings.filterwarnings("ignore")
 class createDS():
 
     def __init__(self, ds):
-        self.GetProjection = ds.GetProjection()
-        self.GetGeoTransform = ds.GetGeoTransform()
+        self.Projection = ds.GetProjection()
+        self.GeoTransform = ds.GetGeoTransform()
+        self.RasterCount = ds.RasterCount
+
+    def GetProjection(self):
+        return(self.Projection)
+
+    def GetGeoTransform(self):
+        return(self.GeoTransform)
+
+    def RasterCount(self):
+        return(self.RasterCount)
 
 class readtar():
     oldDir = os.getcwd()
