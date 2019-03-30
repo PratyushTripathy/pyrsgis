@@ -64,4 +64,23 @@ Any normalised difference indev can be computed using:<br/>
 Which performs (band2-band1)/(band2+band1) in the back end.<br/>
 
 `yourRaster.export(yourndvi, 'yourNDVI.tif', datatype='float')`<br/>
-Be careful that the NDVI is of float datatype, whereas the raw bands are integer datatype. Float data export uses more space on hard drive, so the default has been set to integer. Therefore, to export any float datatype, the argument should be passed explicitly.
+Be careful that the NDVI is of float datatype, whereas the raw bands are integer datatype. Float data export uses more space on hard drive, so the default has been set to integer. Therefore, to export any float datatype, the argument should be passed explicitly.<br/>
+
+Raster files can also be easily converted into CSV files which is mainly required for statistical analysis.<br/>
+`from pyrsgis.convert import rastertocsv`<br/>
+
+Assign the directory where raster files are located<br/>
+`yourDir = "D:\\yourRasterFolder"`<br/>
+`rastertocsv(yourDir, filename='yourFilename.csv')`<br/>
+
+Generally the NoData or NULL values in the raster become random negative values, negatives can be removed using:<br/>
+`rastertocsv(yourDir, filename='yourFilename.csv', negative=False)`<br/>
+
+At times the NoData or NULL values in raster become '127' or '65536', they can also be removed by declaring explicitly<br/>
+`rastertocsv(yourDir, filename='yourFilename.csv', remove=[127, 65536])`<br/>
+This is a trial and check process, please check the generated CSV file for such issues<br/>
+
+Bad rows in the CSV file represents the cell that has zero values in all the rasters and takes a lot of storage space, it can be eliminated using:<br/>
+`rastertocsv(yourDir, filename='yourFilename.csv', badrows=False)`<br/>
+
+
