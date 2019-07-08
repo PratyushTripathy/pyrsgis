@@ -16,7 +16,32 @@ Make sure your current working directory is the same where the raster files are 
 `os.chdir("d:/yourDirectory")`
 
 Please skip the above two lines of code if the directory is already set to the files location.<br/>
-To read the TAR file directly:<br>
+
+To read all bands of a stacked satellite image:<br>
+`dataSource, yourArray = raster.read(file, bands='all')`<br/>
+Which returns the data source containing projection information, and a NumPy array.<br/>
+
+To read a list of bands from stacked images:<br/>
+`dataSource, yourArray = raster.read(file, bands=[2, 3, 4])`<br/>
+Which returns bands 2, 3 & 4 as three-dimensional NumPy array.<br/>
+
+To read a specific band from stacked image:<br/>
+`dataSource, yourArray = raster.read(file, bands=2)`<br/>
+Which returns band number 2 as two-dimensional NumPy array.<br/>
+
+To export the bands from the above read data,<br/>
+(1) For all bands:<br/>
+`raster.export(yourArray, dataSource, "sample_extracted.tif", dtype='int', bands='all')`<br/>
+By default, `dtype = 'int'`, to export float type array (eg. NDVI), use `dtype = 'float'`<br\>
+
+(2) For list of bands:<br/>
+`raster.export(yourArray, dataSource, "sample_extracted.tif", bands=[2, 3, 4])`<br/>
+
+(3) For a specific band:<br/>
+`raster.export(yourArray, dataSource, "sample_extracted.tif", bands=3)`<br/>
+
+
+To read the TAR file directly:<br/>
 `yourData = rg.readtar("yourFilename.tar.gz")`<br/>
 
 Similarly, stacked TIFF file can be read:<br/>
