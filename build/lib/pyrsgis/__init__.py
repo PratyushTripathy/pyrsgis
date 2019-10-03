@@ -1,12 +1,10 @@
 """
-pyrsgis.py
+pyrsgis - Python for Remote Sensing and GIS
 author: pratkrt<at>gmail.com
-date: 2019/02/23
-version: 0.1.8
 Compatible with Python versions 3+
 """
 name = 'PyRSGIS'
-__version__ = "0.1.8"
+__version__ = "0.2.4"
 
 #Importing all the necessary libraries
 import os, glob, datetime
@@ -16,6 +14,7 @@ import matplotlib.cm as cm
 import numpy as np
 import warnings, shutil
 import tarfile, tempfile
+from . import raster
 
 try:
     from matplotlib_scalebar.scalebar import ScaleBar
@@ -27,23 +26,6 @@ warnings.filterwarnings("ignore")
 
 #This creates a class for raster, and based on the format of input
 #it decides whether input is stacked raster data or .tar.gz file
-
-class createDS():
-
-    def __init__(self, ds):
-        self.Projection = ds.GetProjection()
-        self.GeoTransform = ds.GetGeoTransform()
-        self.RasterCount = ds.RasterCount
-
-    def GetProjection(self):
-        return(self.Projection)
-
-    def GetGeoTransform(self):
-        return(self.GeoTransform)
-
-    def RasterCount(self):
-        return(self.RasterCount)
-
 class readtar():
     oldDir = os.getcwd()
 
@@ -122,51 +104,39 @@ class readtar():
                     os.mkdir(self.tempDir)
                 os.chdir(self.tempDir)
                 self.tar.extractall(members=self.generatorTAR(nBand))
-            self.ds = gdal.Open(self.createdFile[0])
-            self.band = self.ds.GetRasterBand(1)
-            self.band = self.band.ReadAsArray()
-            self.band = self.band.astype(float)
+            self.ds, self.band = raster.read(self.createdFile[0], bands=1)
             if self.initiated == False:
                 self.rows = self.ds.RasterYSize
                 self.cols = self.ds.RasterXSize
                 self.projection = self.ds.GetProjection()
                 self.geotransform = self.ds.GetGeoTransform()
                 self.initiated = True
-            self.ds = createDS(self.ds)
+            self.ds = raster.createDS(self.ds)
             # Goes back to the old directory and deletes the temporary directory
             os.chdir(self.oldDir)
             self.clearMemory()
             return(self.band)
 
+    def extractBand(self, bands='All', filename='pyrsgisExtarctedBands.tif'):
+        if type(bands)==type(str()):
+            tempArray = np.random.randint(1, size=(self.nbands, self.rows, self.cols))
+            for n in range(0, self.nbands):
+                tempArray[n,:,:] = self.getband(n+1)
+        elif type(bands) == type(list()):
+            tempArray = np.random.randint(1, size=(len(bands), self.rows, self.cols))
+            for n, index in enumerate(bands):
+                tempArray[n,:,:] = self.getband(index)
+        raster.export(tempArray, self.ds, filename, bands='All')
+
     #This method calculates the normalised differnce of any two given bands  
     def nordif(self, band2, band1):
-        if self.type == "TIFFfile":
-            self.band1 = self.ds.GetRasterBand(band1)
-            self.band1 = self.band1.ReadAsArray()
-            self.band1 = self.band1.astype(float)
-            self.band2 = self.ds.GetRasterBand(band2)
-            self.band2 = self.band2.ReadAsArray()
-            self.band2 = self.band2.astype(float)
-            return((self.band2-self.band1)/(self.band2+self.band1))
-        elif self.type == "TARfile":
-            self.band1 = self.getband(band1)
-            self.band2 = self.getband(band2)
-            return((self.band2-self.band1)/(self.band2+self.band1))
+        self.band1 = self.getband(band1)
+        self.band2 = self.getband(band2)
+        return((self.band2-self.band1)/(self.band2+self.band1))
 
     #This method saves the processed image in the drive  
-    def export(self, array, outfile='pyrsgisRaster.tif', datatype='int'):
-        self.array = array
-        self.driver = gdal.GetDriverByName("GTiff")
-        if datatype == 'float':
-            self.outdata = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
-        elif datatype == 'int':
-            self.outdata = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
-        self.outdata.SetGeoTransform(self.geotransform)##sets same geotransform as input
-        self.outdata.SetProjection(self.projection)##sets same projection as input
-        self.outdata.GetRasterBand(1).WriteArray(self.array)
-        self.outdata.GetRasterBand(1).SetNoDataValue(10000)##if you want these values transparent
-        self.outdata.FlushCache()
-        self.outdata = None
+    def export(self, array, outfile='pyrsgisRaster.tif', dtype='int'):
+        raster.export(array, self.ds, filename=outfile, dtype=dtype)
 
     #This method clears everything stored in the virtual momry to reduce load   
     def clearMemory(self):
@@ -247,13 +217,9 @@ class readtif():
 
     #This method returns the band in the form of an array
     def getband(self, nBand, datatype='int'):
-        self.ds = gdal.Open(self.name)
-        self.band = self.ds.GetRasterBand(nBand)
-        self.band = self.band.ReadAsArray()
+        self.ds, self.band = raster.read(self.name, bands=nBand)
         if datatype == 'float':
             self.band = self.band.astype(float)
-        else:
-            pass
         if self.initiated == False:
             self.rows = self.ds.RasterYSize
             self.cols = self.ds.RasterXSize
@@ -274,19 +240,8 @@ class readtif():
 
     #This method saves the processed image in the drive  
     def export(self, array, outfile='pyrsgisRaster.tif', datatype='int'):
-        self.array = array
-        self.driver = gdal.GetDriverByName("GTiff")
-        if datatype == 'float':
-            self.outds = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_Float32) # option: GDT_UInt16, GDT_Float32
-        elif datatype == 'int':
-            self.outds = self.driver.Create(outfile, self.cols, self.rows, 1, gdal.GDT_UInt16) # option: GDT_UInt16, GDT_Float32
-        self.outds.SetGeoTransform(self.geotransform)##sets same geotransform as input
-        self.outds.SetProjection(self.projection)##sets same projection as input
-        self.outds.GetRasterBand(1).WriteArray(self.array)
-        self.outds.GetRasterBand(1).SetNoDataValue(10000)##if you want these values transparent
-        self.outds.FlushCache()
-        self.outds = None
-
+        raster.export(array, self.ds, filename=outfile, dtype=datatype)
+        
     #This method clears everything stored in the virtual momry to reduce load   
     def clearMemory(self):
         self.band = None
@@ -358,10 +313,10 @@ def radioCorrection(band, maxVal=255):
 #This method shows the band using matplotlib
 def display(band, maptitle = 'Pyrsgis Raster', cmap='PRGn'):
     plt.title(maptitle, fontsize=20)
-    self.legend = cm.ScalarMappable(cmap=cmap)
-    self.legend.set_array(np.array([band.min(), band.min()+band.max()/2, band.max()]))
-    plt.colorbar(self.legend)
+    legend = cm.ScalarMappable(cmap=cmap)
+    legend.set_array(np.array([band.min(), band.min()+band.max()/2, band.max()]))
+    plt.colorbar(legend)
     plt.imshow(band, cmap=cmap)
-    self.scalebar = ScaleBar(30)
-    plt.gca().add_artist(self.scalebar)
+    scalebar = ScaleBar(30)
+    plt.gca().add_artist(scalebar)
     plt.show()
