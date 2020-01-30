@@ -111,4 +111,12 @@ This is a trial and check process, please check the generated CSV file for such 
 Bad rows in the CSV file represents the cell that has zero values in all the rasters and takes a lot of storage space, it can be eliminated using:<br/>
 `rastertocsv(yourDir, filename='yourFilename.csv', badrows=False)`<br/>
 
+pyrsgis also allows the user to quickly create the northing and easting coordinates using a reference raster<br/>
+The flip option can be use to flip the resulting rasters.<br/>
+
+`from pyrsgis.raster import northing, easting`<br/>
+
+`referenceRaster = 'E:/Example/landcover.tif'`<br/>
+`northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True)`<br/>
+`easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False)`<br/>
 
