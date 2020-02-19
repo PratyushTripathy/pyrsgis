@@ -36,6 +36,7 @@ To export the bands from the above read data,<br/>
 (1) For all bands:<br/>
 `raster.export(yourArray, dataSource, "sample_extracted.tif", dtype='int', bands='all')`<br/>
 By default, `dtype = 'int'`, to export float type array (eg. NDVI), use `dtype = 'float'`<br/>
+Other options are: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'typecount', 'uint8', 'uint16', 'uint32', 'unknown'
 
 (2) For list of bands:<br/>
 `raster.export(yourArray, dataSource, "sample_extracted.tif", bands=[2, 3, 4])`<br/>
