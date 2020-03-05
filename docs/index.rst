@@ -5,6 +5,9 @@
 
 Welcome to pyrsgis's documentation!
 ===================================
+The pyrsgis documentation file on readthedocs.com is under development. Please check back later.
+Please refer to the PyPi repository for basic documentation. https://pypi.org/project/pyrsgis/
+Thanks for your Patience!
 
 .. toctree::
    :maxdepth: 2

@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrsgis",
-    version="0.2.4",
+    version="0.3.1",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
-    description="Processing satellite data directly from TAR files.",
+    description="Reading and writing GeoTIFFs made easy. Proces satellite data directly from TAR files.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/PratyushTripathy/pyrsgis",

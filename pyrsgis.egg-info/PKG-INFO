@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: pyrsgis
-Version: 0.2.4
-Summary: Processing satellite data directly from TAR files.
+Version: 0.3.1
+Summary: Reading and writing GeoTIFFs made easy. Proces satellite data directly from TAR files.
 Home-page: https://github.com/PratyushTripathy/pyrsgis
 Author: Pratyush Tripathy
 Author-email: pratkrt@gmail.com
@@ -9,7 +9,11 @@ License: UNKNOWN
 Description: # Python-for-Remote-Sensing-and-GIS
         PyRSGIS is a powerful module to read, manipulate and export geo-rasters. The module is built on the GDAL library, and is very efficient for various geospatial analysis. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support.
         
-        [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
+        
+        Official Python repository<br/>
+        [![Python](https://www.python.org/static/img/python-logo.png)](https://pypi.org/project/pyrsgis/)<br/>
+        
+        Cite : [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
         
         The module is capable of processing Landsat data from the downloaded TAR files itself.
         
@@ -44,6 +48,7 @@ Description: # Python-for-Remote-Sensing-and-GIS
         (1) For all bands:<br/>
         `raster.export(yourArray, dataSource, "sample_extracted.tif", dtype='int', bands='all')`<br/>
         By default, `dtype = 'int'`, to export float type array (eg. NDVI), use `dtype = 'float'`<br/>
+        Other options are: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
         
         (2) For list of bands:<br/>
         `raster.export(yourArray, dataSource, "sample_extracted.tif", bands=[2, 3, 4])`<br/>
@@ -119,6 +124,14 @@ Description: # Python-for-Remote-Sensing-and-GIS
         Bad rows in the CSV file represents the cell that has zero values in all the rasters and takes a lot of storage space, it can be eliminated using:<br/>
         `rastertocsv(yourDir, filename='yourFilename.csv', badrows=False)`<br/>
         
+        pyrsgis also allows the user to quickly create the northing and easting coordinates using a reference raster<br/>
+        The flip option can be use to flip the resulting rasters.<br/>
+        
+        `from pyrsgis.raster import northing, easting`<br/>
+        
+        `referenceRaster = 'E:/Example/landcover.tif'`<br/>
+        `northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True)`<br/>
+        `easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False)`<br/>
         
         
 Platform: UNKNOWN

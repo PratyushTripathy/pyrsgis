@@ -4,7 +4,7 @@ author: pratkrt<at>gmail.com
 Compatible with Python versions 3+
 """
 name = 'PyRSGIS'
-__version__ = "0.2.4"
+__version__ = "0.3.1"
 
 #Importing all the necessary libraries
 import os, glob, datetime

@@ -43,7 +43,6 @@ def extractBands(ds, bands):
         array = ds.ReadAsArray()
     return(array)
     
-
 def read(file, bands='all'):
     ds = gdal.Open(file)
     if type(bands) == type('all'):
@@ -60,6 +59,22 @@ def read(file, bands='all'):
     else:
         print("Inappropriate bands selection. Please use the following arguments:\n1) bands = 'all'\n2) bands = [2, 3, 4]\n3) bands = 2")
         return(None, None)
+
+raster_dtype = {'byte': gdal.GDT_Byte,
+                'cfloat32': gdal.GDT_CFloat32,
+                'cfloat64': gdal.GDT_CFloat64,
+                'cint16': gdal.GDT_CInt16,
+                'cint32': gdal.GDT_CInt32,
+                'float': gdal.GDT_Float32,
+                'float32': gdal.GDT_Float32,
+                'float64': gdal.GDT_Float64,
+                'int': gdal.GDT_Byte,
+                'int16': gdal.GDT_Int16,
+                'int32': gdal.GDT_Int32,
+                'uint8': gdal.GDT_Byte,
+                'uint16': gdal.GDT_UInt16,
+                'uint32': gdal.GDT_UInt32,
+                }
 
 def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1):
     if len(band.shape) == 3:
@@ -83,25 +98,22 @@ def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1):
         nBands = len(bands)
         outBands = bands
     driver = gdal.GetDriverByName("GTiff")
-    if dtype == 'float':
-            outdata = driver.Create(filename, col, row, nBands, 6) # option: GDT_UInt16, GDT_Float32
-    elif dtype == 'int':
-            outdata = driver.Create(filename, col, row, nBands, 3) # option: GDT_UInt16, GDT_Float32
+    outdata = driver.Create(filename, col, row, nBands, raster_dtype[dtype.lower()])
     outdata.SetGeoTransform(ds.GetGeoTransform())
     outdata.SetProjection(ds.GetProjection())
     if type(bands) == type(1):
         if layers > 1:
             outdata.GetRasterBand(nBands).WriteArray(band[bands-1, :, :])
-            outdata.GetRasterBand(nBands).SetNoDataValue(0)
+            outdata.GetRasterBand(nBands).SetNoDataValue(-9999)
         else:
             outdata.GetRasterBand(nBands).WriteArray(band)
-            outdata.GetRasterBand(nBands).SetNoDataValue(0)
+            outdata.GetRasterBand(nBands).SetNoDataValue(-9999)
     elif (type(bands) == type('all') and bands.lower()=='all') or\
          type(bands) == type([1, 2, 3])or\
          type(bands) == type(tuple()):
         for n, bandNumber in enumerate(outBands):
             outdata.GetRasterBand(n+1).WriteArray(band[bandNumber-1,:,:])
-            outdata.GetRasterBand(n+1).SetNoDataValue(0)
+            outdata.GetRasterBand(n+1).SetNoDataValue(-9999)
     outdata.FlushCache() 
     outdata = None
 
@@ -118,14 +130,14 @@ def northEast(array, layer='both'):
         return(east)
 
 def northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True):
-    ds, band = read(referenceFile, band=1)
+    ds, band = read(referenceFile, bands=1)
     north = northEast(band, layer='north')
     if flip==True:
         north = np.flip(north, axis=0)
     export(north, ds, filename=outFile)
 
 def easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False):
-    ds, band = read(referenceFile, band=1)
+    ds, band = read(referenceFile, bands=1)
     east = northEast(band, layer='east')
     if flip==True:
         east = np.flip(east, axis=1)

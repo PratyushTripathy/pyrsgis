@@ -24,7 +24,7 @@ copyright = '2020, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
 # The short X.Y version
-version = '0.3.0'
+version = '0.3.1'
 # The full version, including alpha/beta/rc tags
 release = 'Beta'
 
@@ -38,8 +38,7 @@ release = 'Beta'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['recommonmark'
-]
+extensions = ['recommonmark']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
