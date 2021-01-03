@@ -1,5 +1,5 @@
 # Python-for-Remote-Sensing-and-GIS
-**pyrsgis** enables users to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient than GDAL for reading and exporting GeoTIFs. **pyrsgis** also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
+**pyrsgis** enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. **pyrsgis** also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
 
 
 See installation command using pip on the PyPi page - [link](https://pypi.org/project/pyrsgis/)<br/>
@@ -15,24 +15,23 @@ from pyrsgis import raster
 
 file_path = r'D:/your_file_name.tif'
 ```
-To read bands of a stacked satellite image for:<br>
-* For all bands<br/>
+* To read all the bands of a stacked satellite image:<br/>
 ```Python
 ds, arr = raster.read(file, bands='all')
-print(arr.shape)
 ```
-`dataSource, yourArray = raster.read(file, bands='all')`<br/>
-Which returns the data source containing projection information, and a NumPy array.<br/>
+where, **ds** is the data source similar to GDAL and **arr** is the numpy array that contains all the bands of the input raster. The **arr** can be 2D or 3D depending on the input data. One can check the shape of the array using the `print(arr.shape)` command. The `bands` argument in the `raster.read` function defaults to `'all'`.<br/>
 
-To read a list of bands from stacked images:<br/>
-(2) For list of bands:<br/>
-`dataSource, yourArray = raster.read(file, bands=[2, 3, 4])`<br/>
-Which returns bands 2, 3 & 4 as three-dimensional NumPy array.<br/>
+* To read a list of bands of a stacked satellite image:<br/>
+```Python
+ds, arr = raster.read(file, bands=[2, 3, 4])
+```
+Passing the band numbers in a list returns bands 2, 3 & 4 as three-dimensional numpy array.<br/>
 
-To read a specific band from stacked image for:<br/>
-(3) a specific band:<br/>
-`dataSource, yourArray = raster.read(file, bands=2)`<br/>
-Which returns band number 2 as two-dimensional NumPy array.<br/>
+* To read a specific band from stacked satellite image:<br/>
+```Python
+ds, arr = raster.read(file, bands=2)
+```
+Passing a single band number returns that particular band as two-dimensional numpy array.<br/>
 
 To export the bands from the above read data,<br/>
 (1) For all bands:<br/>
