@@ -2,26 +2,25 @@
 **pyrsgis** enables users to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient than GDAL for reading and exporting GeoTIFs. **pyrsgis** also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
 
 
-**Official Python repository:**<br/>
-[![Python](https://www.python.org/static/img/python-logo.png)](https://pypi.org/project/pyrsgis/)<br/>
+See installation command using pip on the PyPi page - [link](https://pypi.org/project/pyrsgis/)<br/>
 
 **Recommended citation:**<br/>
-Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V3.2.3. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
+Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
 
 # Sample code
+## 1. Reading .tif extension file
+Import the module and define the input file path.<br/>
+```Python
+from pyrsgis import raster
 
-
-`import pyrsgis as rg`
-
-We will first start with reading raster and perform some basic operations.
-Make sure your current working directory is the same where the raster files are located, if not use the following command:<br/>
-`import os`<br/>
-`os.chdir("d:/yourDirectory")`
-
-Please skip the above two lines of code if the directory is already set to the files location.<br/>
-
-To read bands of a stacked satellite image,<br>
-(1) For all bands:<br/>
+file_path = r'D:/your_file_name.tif'
+```
+To read bands of a stacked satellite image for:<br>
+* For all bands<br/>
+```Python
+ds, arr = raster.read(file, bands='all')
+print(arr.shape)
+```
 `dataSource, yourArray = raster.read(file, bands='all')`<br/>
 Which returns the data source containing projection information, and a NumPy array.<br/>
 
@@ -30,8 +29,8 @@ To read a list of bands from stacked images:<br/>
 `dataSource, yourArray = raster.read(file, bands=[2, 3, 4])`<br/>
 Which returns bands 2, 3 & 4 as three-dimensional NumPy array.<br/>
 
-To read a specific band from stacked image:<br/>
-(3) For a specific band:<br/>
+To read a specific band from stacked image for:<br/>
+(3) a specific band:<br/>
 `dataSource, yourArray = raster.read(file, bands=2)`<br/>
 Which returns band number 2 as two-dimensional NumPy array.<br/>
 
