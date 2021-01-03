@@ -1,7 +1,6 @@
 # Python-for-Remote-Sensing-and-GIS
 *pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. *pyrsgis* also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
 
-
 See installation command using pip on the PyPi page - [link](https://pypi.org/project/pyrsgis/)<br/>
 
 **Recommended citation:**<br/>
@@ -116,9 +115,9 @@ rastertocsv(your_dir, filename=out_file_path, badrows=False)
 <p>
   
 pyrsgis allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
-[image]
+[image](https://github.com/PratyushTripathy/pyrsgis/master/media/northing_easting.png)
 
-To generate these GeoTIFF files, start by importing the function:
+The cell value in the generated rasters are the row and column number of the cell. To generate these GeoTIFF files, start by importing the function:
 
 ```Python
 from pyrsgis.raster import northing, easting
