@@ -1,17 +1,16 @@
 # Python-for-Remote-Sensing-and-GIS
-**pyrsgis** is a module that enables the users to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient than GDAL for reading and exporting GeoTIFs. **pyrsgis** also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
+**pyrsgis** enables users to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient than GDAL for reading and exporting GeoTIFs. **pyrsgis** also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
 
 
-Official Python repository<br/>
+**Official Python repository:**<br/>
 [![Python](https://www.python.org/static/img/python-logo.png)](https://pypi.org/project/pyrsgis/)<br/>
 
-Cite : [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
+**Recommended citation:**<br/>
+Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V3.2.3. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
 
-The module is capable of processing Landsat data from the downloaded TAR files itself.
+# Sample code
 
-Please find few example below:
 
-Let's import the module by using the below code<br/>
 `import pyrsgis as rg`
 
 We will first start with reading raster and perform some basic operations.
