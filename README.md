@@ -17,34 +17,52 @@ file_path = r'D:/your_file_name.tif'
 ```
 * To read all the bands of a stacked satellite image:<br/>
 ```Python
-ds, arr = raster.read(file, bands='all')
+ds, arr = raster.read(file_path, bands='all')
 ```
 where, **ds** is the data source similar to GDAL and **arr** is the numpy array that contains all the bands of the input raster. The **arr** can be 2D or 3D depending on the input data. One can check the shape of the array using the `print(arr.shape)` command. The `bands` argument in the `raster.read` function defaults to `'all'`.<br/>
 
 * To read a list of bands of a stacked satellite image:<br/>
 ```Python
-ds, arr = raster.read(file, bands=[2, 3, 4])
+ds, arr = raster.read(file_path, bands=[2, 3, 4])
 ```
 Passing the band numbers in a list returns bands 2, 3 & 4 as three-dimensional numpy array.<br/>
 
 * To read a specific band from stacked satellite image:<br/>
 ```Python
-ds, arr = raster.read(file, bands=2)
+ds, arr = raster.read(file_path, bands=2)
 ```
 Passing a single band number returns that particular band as two-dimensional numpy array.<br/>
 
-To export the bands from the above read data,<br/>
-(1) For all bands:<br/>
-`raster.export(yourArray, dataSource, "sample_extracted.tif", dtype='int', bands='all')`<br/>
-By default, `dtype = 'int'`, to export float type array (eg. NDVI), use `dtype = 'float'`<br/>
-Other options are: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
+* To read a single band TIF file:<br/>
+```Python
+ds, arr = raster.read(file_path)
+```
+Since the `bands` argument defaults to `'all'`, this will read all the bands in the input file, here, one band only.<br/>
 
-(2) For list of bands:<br/>
-`raster.export(yourArray, dataSource, "sample_extracted.tif", bands=[2, 3, 4])`<br/>
+## 2. Exporting .tif extension file
+In all the below examples, it is assumed that the number of rows and columns, and the cell size of the input and output rasters are the same. All these are stored in the `ds` variable, please see details here: link.<br/>
+* To export all bands of a 3D array:<br/>
+```Python
+raster.export(arr, ds, "sample_file_all_bands.tif", dtype='int', bands='all')
+```
+The `dtype` argument in the above function defaults to `'int'`, which is 8-bit integer. Please be careful to change this while exporting arrays with large values. Similarly, to export float type array (eg. NDVI), use `dtype = 'float'`<br/>
+Other options for the `dtype` argument are: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
 
-(3) For a specific band:<br/>
-`raster.export(yourArray, dataSource, "sample_extracted.tif", bands=3)`<br/>
+* To export a list of bands of a 3D array:<br/>
+```Python
+raster.export(arr, ds, "sample_file_bands_234.tif", bands=[2, 3, 4])
+```
 
+* To export any one band of a 3D array:<br/>
+```Python
+raster.export(arr, ds, "sample_file_band_3.tif", bands=3)
+```
+
+* To export a single band array:<br/>
+```Python
+raster.export(arr, ds, "sample_file.tif")
+```
+where, `arr` should be a 2D array.<br/>
 
 To read the TAR file directly:<br/>
 `yourData = rg.readtar("yourFilename.tar.gz")`<br/>
