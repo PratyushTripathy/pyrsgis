@@ -115,7 +115,7 @@ rastertocsv(your_dir, filename=out_file_path, badrows=False)
 <p>
   
 pyrsgis allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
-[image](https://github.com/PratyushTripathy/pyrsgis/master/media/northing_easting.png)
+<img src="https://github.com/PratyushTripathy/pyrsgis/blob/master/media/northing_easting.png" height="225" width="640">
 
 The cell value in the generated rasters are the row and column number of the cell. To generate these GeoTIFF files, start by importing the function:
 
