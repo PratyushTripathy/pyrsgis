@@ -8,7 +8,8 @@ See installation command using pip on the PyPi page - [link](https://pypi.org/pr
 Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
 
 # Sample code
-## 1. Reading .tif extension file
+<details><summary>1. Reading .tif extension file</summary>
+<p>
 Import the module and define the input file path.<br/>
 ```Python
 from pyrsgis import raster
@@ -38,8 +39,11 @@ Passing a single band number returns that particular band as two-dimensional num
 ds, arr = raster.read(file_path)
 ```
 Since the `bands` argument defaults to `'all'`, this will read all the bands in the input file, here, one band only.<br/>
+</p>
+</details>
 
-## 2. Exporting .tif extension file
+<details><summary>2. Exporting .tif extension file</summary>
+<p>
 In all the below examples, it is assumed that the number of rows and columns, and the cell size of the input and output rasters are the same. All these are stored in the `ds` variable, please see details here: link.<br/>
 * To export all bands of a 3D array:<br/>
 ```Python
@@ -67,8 +71,11 @@ out_file_path = r'D:/sample_file.tif'
 raster.export(arr, ds, out_file_path)
 ```
 where, `arr` should be a 2D array.<br/>
+</p>
+</details>
 
-## 3. Converting TIF to CSV
+<details><summary>3. Converting TIF to CSV</summary>
+<p>
 GeoTIFF files can be converted to CSV files using *pyrsgis*. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
 Import the function:<br/>
 ```Python
@@ -98,8 +105,11 @@ Similarly, there are bad rows in the CSV file, representing zero value in all th
 ```Python
 rastertocsv(your_dir, filename=out_file_path, badrows=False)
 ```
+</p>
+</details>
 
-## 4. Creating northing and easting using a reference raster
+<details><summary>4. Creating northing and easting using a reference raster</summary>
+<p>
 pyrsgis allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
 [image]
 
@@ -113,8 +123,11 @@ northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True)
 easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False)
 ```
 As the name suggests, the `flip` argument flips the resulting rasters.<br/>
+</p>
+</details>
 
-## 5. Reading directly from .tar.gz files (beta)
+<details><summary>5. Reading directly from .tar.gz files (beta)</summary>
+<p>
 Currently, only Landsat data is supported.<br/>
 ```Python
 import pyrsgis
@@ -191,5 +204,5 @@ out_file_path = r'D:/your_ndvi.tif'
 your_data.export(your_ndvi, out_file_path, datatype='float')
 ```
 Be careful with the float type of NDVI.<br/>
-
-
+</p>
+</details>
