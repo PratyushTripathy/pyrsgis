@@ -1,5 +1,5 @@
 # Python-for-Remote-Sensing-and-GIS
-**pyrsgis** enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. **pyrsgis** also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
+*pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. *pyrsgis* also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
 
 
 See installation command using pip on the PyPi page - [link](https://pypi.org/project/pyrsgis/)<br/>
@@ -69,7 +69,7 @@ raster.export(arr, ds, out_file_path)
 where, `arr` should be a 2D array.<br/>
 
 ## 3. Converting TIF to CSV
-GeoTIFF files can be converted to CSV files using **pyrsgis**. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
+GeoTIFF files can be converted to CSV files using *pyrsgis*. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
 Import the function:<br/>
 ```Python
 from pyrsgis.convert import rastertocsv
@@ -99,8 +99,8 @@ Similarly, there are bad rows in the CSV file, representing zero value in all th
 rastertocsv(your_dir, filename=out_file_path, badrows=False)
 ```
 
-## 4. Creating Northing and easting using a reference raster
-**pyrsgis** allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
+## 4. Creating northing and easting using a reference raster
+pyrsgis allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
 [image]
 
 To generate these GeoTIFF files, start by importing the function:
