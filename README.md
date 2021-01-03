@@ -1,7 +1,8 @@
 # Python-for-Remote-Sensing-and-GIS
 *pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. *pyrsgis* also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com)
 
-See installation command using pip on the PyPi page - [link](https://pypi.org/project/pyrsgis/)<br/>
+To install using pip, see the PyPI page - [link](https://pypi.org/project/pyrsgis/)<br/>
+To install using conda, see the Anaconda page - [link](https://anaconda.org/pratyusht/pyrsgis)
 
 **Recommended citation:**<br/>
 Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
