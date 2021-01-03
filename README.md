@@ -11,11 +11,13 @@ Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.2 [![DOI
 <details><summary>1. Reading .tif extension file</summary>
 <p>
 Import the module and define the input file path.<br/>
+
 ```Python
 from pyrsgis import raster
 
 file_path = r'D:/your_file_name.tif'
 ```
+
 * To read all the bands of a stacked satellite image:<br/>
 ```Python
 ds, arr = raster.read(file_path, bands='all')
@@ -45,6 +47,7 @@ Since the `bands` argument defaults to `'all'`, this will read all the bands in 
 <details><summary>2. Exporting .tif extension file</summary>
 <p>
 In all the below examples, it is assumed that the number of rows and columns, and the cell size of the input and output rasters are the same. All these are stored in the `ds` variable, please see details here: link.<br/>
+  
 * To export all bands of a 3D array:<br/>
 ```Python
 out_file_path = r'D:/sample_file_all_bands.tif'
@@ -78,9 +81,10 @@ where, `arr` should be a 2D array.<br/>
 <p>
 GeoTIFF files can be converted to CSV files using *pyrsgis*. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
 Import the function:<br/>
+  
 ```Python
 from pyrsgis.convert import rastertocsv
-``
+```
 
 * To convert all the bands present in a folder:
 ```Python
@@ -110,10 +114,12 @@ rastertocsv(your_dir, filename=out_file_path, badrows=False)
 
 <details><summary>4. Creating northing and easting using a reference raster</summary>
 <p>
+  
 pyrsgis allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
 [image]
 
 To generate these GeoTIFF files, start by importing the function:
+
 ```Python
 from pyrsgis.raster import northing, easting
 
@@ -128,6 +134,7 @@ As the name suggests, the `flip` argument flips the resulting rasters.<br/>
 
 <details><summary>5. Reading directly from .tar.gz files (beta)</summary>
 <p>
+  
 Currently, only Landsat data is supported.<br/>
 ```Python
 import pyrsgis
