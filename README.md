@@ -8,7 +8,7 @@ See installation command using pip on the PyPi page - [link](https://pypi.org/pr
 Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
 
 # Sample code
-<details><summary>1. Reading .tif extension file</summary>
+<details><summary><b>1. Reading .tif extension file</b></summary>
 <p>
 Import the module and define the input file path.<br/>
 
@@ -44,7 +44,7 @@ Since the `bands` argument defaults to `'all'`, this will read all the bands in 
 </p>
 </details>
 
-<details><summary>2. Exporting .tif extension file</summary>
+<details><summary><b>2. Exporting .tif extension file</b></summary>
 <p>
 In all the below examples, it is assumed that the number of rows and columns, and the cell size of the input and output rasters are the same. All these are stored in the `ds` variable, please see details here: link.<br/>
   
@@ -77,7 +77,7 @@ where, `arr` should be a 2D array.<br/>
 </p>
 </details>
 
-<details><summary>3. Converting TIF to CSV</summary>
+<details><summary><b>3. Converting TIF to CSV</b></summary>
 <p>
 GeoTIFF files can be converted to CSV files using *pyrsgis*. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
 Import the function:<br/>
@@ -86,7 +86,7 @@ Import the function:<br/>
 from pyrsgis.convert import rastertocsv
 ```
 
-* To convert all the bands present in a folder:
+To convert all the bands present in a folder:
 ```Python
 your_dir = r"D:/your_raster_directory"
 out_file_path = r"D:/yourFilename.csv"
@@ -112,7 +112,7 @@ rastertocsv(your_dir, filename=out_file_path, badrows=False)
 </p>
 </details>
 
-<details><summary>4. Creating northing and easting using a reference raster</summary>
+<details><summary><b>4. Creating northing and easting using a reference raster</b></summary>
 <p>
   
 pyrsgis allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
@@ -132,7 +132,7 @@ As the name suggests, the `flip` argument flips the resulting rasters.<br/>
 </p>
 </details>
 
-<details><summary>5. Reading directly from .tar.gz files (beta)</summary>
+<details><summary><b>5. Reading directly from .tar.gz files (beta)</b></summary>
 <p>
   
 Currently, only Landsat data is supported.<br/>
