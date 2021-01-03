@@ -4,7 +4,7 @@ author: pratkrt<at>gmail.com
 Compatible with Python versions 3+
 """
 name = 'PyRSGIS'
-__version__ = "0.3.1"
+__version__ = "0.3.3"
 
 #Importing all the necessary libraries
 import os, glob, datetime
@@ -19,7 +19,7 @@ from . import raster
 try:
     from matplotlib_scalebar.scalebar import ScaleBar
 except:
-    print("Warning! matplotlib_scalebar library not found.")
+    print("Warning! matplotlib_scalebar library not found. You may not be able to export map directly.")
     
 #Disabling annoying warnings
 warnings.filterwarnings("ignore")

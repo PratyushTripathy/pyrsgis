@@ -134,14 +134,14 @@ def northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True):
     north = northEast(band, layer='north')
     if flip==True:
         north = np.flip(north, axis=0)
-    export(north, ds, filename=outFile)
+    export(north, ds, filename=outFile, dtype='int32')
 
 def easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False):
     ds, band = read(referenceFile, bands=1)
     east = northEast(band, layer='east')
     if flip==True:
         east = np.flip(east, axis=1)
-    export(east, ds, filename=outFile)
+    export(east, ds, filename=outFile, dtype='int32')
     
 def radiometricCorrection(arr, byte=8):
     if len(arr.shape) == 3:
