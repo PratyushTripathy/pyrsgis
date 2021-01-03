@@ -43,100 +43,153 @@ Since the `bands` argument defaults to `'all'`, this will read all the bands in 
 In all the below examples, it is assumed that the number of rows and columns, and the cell size of the input and output rasters are the same. All these are stored in the `ds` variable, please see details here: link.<br/>
 * To export all bands of a 3D array:<br/>
 ```Python
-raster.export(arr, ds, "sample_file_all_bands.tif", dtype='int', bands='all')
+out_file_path = r'D:/sample_file_all_bands.tif'
+raster.export(arr, ds, out_file_path, dtype='int', bands='all')
 ```
-The `dtype` argument in the above function defaults to `'int'`, which is 8-bit integer. Please be careful to change this while exporting arrays with large values. Similarly, to export float type array (eg. NDVI), use `dtype = 'float'`<br/>
-Other options for the `dtype` argument are: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
+The `dtype` argument in the above function defaults to `'int'`, which is 8-bit integer. Please be careful to change this while exporting arrays with large values. Similarly, to export float type array (eg. NDVI), use `dtype = 'float'`. Data type of high pixel-depth, e.g. Integer32, Integer64, or float type uses more space on hard drive, so the default has been set to integer. To export any float datatype, the argument should be passed explicitly.<br/>
+These are the options for the `dtype` argument: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
 
 * To export a list of bands of a 3D array:<br/>
 ```Python
-raster.export(arr, ds, "sample_file_bands_234.tif", bands=[2, 3, 4])
+out_file_path = r'D:/sample_file_bands_234.tif'
+raster.export(arr, ds, out_file_path, bands=[2, 3, 4])
 ```
 
 * To export any one band of a 3D array:<br/>
 ```Python
-raster.export(arr, ds, "sample_file_band_3.tif", bands=3)
+out_file_path = r'D:/sample_file_band_3.tif'
+raster.export(arr, ds, out_file_path, bands=3)
 ```
 
 * To export a single band array:<br/>
 ```Python
-raster.export(arr, ds, "sample_file.tif")
+out_file_path = r'D:/sample_file.tif'
+raster.export(arr, ds, out_file_path)
 ```
 where, `arr` should be a 2D array.<br/>
 
-To read the TAR file directly:<br/>
-`yourData = rg.readtar("yourFilename.tar.gz")`<br/>
+## 3. Reading directly from .tar.gz files (beta)
+Currently, only Landsat data is supported.<br/>
+```Python
+import pyrsgis
 
-Similarly, stacked TIFF file can be read:<br/>
-`yourData = rg.readtif("yourFilename.tif")`<br/>
+file_path = r'D:/your_file_name.tar.gz'
+your_data = pyrsgis.readtar(file_path)
+```
+The above code reads the data and stores in the `your_data` variable.<br/>
 
-After the above code, various properties of the raster can be assessed.<br/>
-`print(yourData.rows)`<br/>
-`print(yourData.cols)`<br/>
-will give you the number of rows and columns.<br/>
+Various properties of the raster can be assessed using the following code:<br/>
+```Python
+print(your_data.rows)
+print(your_data.cols)
+```
+This will display the number of rows and columns of the input data.<br/>
 
-The number of bands can be checked using:<br/>
-`print(yourData.nbands)`<br/>
+Similarly, the number of bands can be checked using:<br/>
+```Python
+print(your_data.nbands)
+```
 
-The satellite sensor can also be determined.<br/>
-`print(yourRaster.satellite)`<br/>
+On reading the .tar.gz files directly, pyrsgis determines the satellite sensor. This can be checked using:<br/>
+```Python
+print(your_data.satellite)
+```
+This will display the satellite sensor, for instance, Landsat-5, Landsat-8, etc.<br/>
 
-If the above code shows the correct satellite sensor correctly, then this getting this should be easy:<br/>
-`print(yourRaster.bandIndex)`<br/>
-This will show correctly the band number for available bands.<br/>
+If the above code shows the correct satellite sensor, then the list of band names of the sensor (in order) can easily be checked using:<br/>
+```Python
+print(your_data.bandIndex)
+```
 
 Any particular band can be extarcted using:<br/>
-`yourBand = yourData.getband(bandNumber)`<br/>
-
+```Python
+band_number = 1
+your_band = your_data.getband(band_number)
+```
 The above code returns the band as array which can be visualised using:<br/>
-`display(yourBand)`<br/>
-or
-`display(yourData.getband(bandNumber))`<br/>
-The map can directly be saved as an image.<br/>
 
-Map title can also be assigned:<br/>
-`display(yourBand, maptitle='Your Map Title')`<br/>
+```Python
+display(your_band, maptitle='Title of your image', cmap='PRGn')
+```
+or, directly using:
+```Python
+band_number = 1
+display(your_data.getband(band_number), maptitle='Title of your image', cmap='PRGn')
+```
+The generated map can directly be saved as an image.<br/>
 
 The extracted band can be exported using:<br/>
-`yourData.export(yourBand, "yourOutputFilename.tif")`<br/>
+```Python
+out_file_path = r'D:/sample_output.tif'
+your_data.export(your_band, out_file_path)
+```
 This saves the extracted band to the same directory.<br/>
-If exporting a float data type (raster with decimal values), please define the datatype explicitly, default is 'int':<br/>
-`yourData.export(yourBand, "yourOutputFilename.tif", datatype='float')`<br/>
+
+To export the float type raster, please define the `datatype` explicitly, default is 'int':<br/>
+```Python
+your_data.export(your_band, out_file_path, datatype='float')
+```
 
 The NDVI (Normalised Difference Vegetaton Index) can be computed easily.<br/>
-`yourndvi = yourData.ndvi()`<br/>
-This returns the NDVI array,which can be exported using the same command used for the band above.<br/>
+```Python
+your_ndvi = your_data.ndvi()
+```
 
-Any normalised difference indev can be computed using:<br/>
-`yourIndex = yourData.nordif(bandNumber2, bandNumber1)`<br/>
-Which performs (band2-band1)/(band2+band1) in the back end.<br/>
+Normalised difference index between any two bands can be computed using:<br/>
+```Python
+norm_diff = your_data.nordif(bandNumber2, bandNumber1)
+```
+This computes (band2-band1)/(band2+band1) in the back end and returns a numpy array. THe resulting arracy can be exported using:<br/>
+```Python
+out_file_path = r'D:/your_ndvi.tif'
+your_data.export(your_ndvi, out_file_path, datatype='float')
+```
+Be careful with the float type of NDVI.<br/>
 
-`yourRaster.export(yourndvi, 'yourNDVI.tif', datatype='float')`<br/>
-Be careful that the NDVI is of float datatype, whereas the raw bands are integer datatype. Float data export uses more space on hard drive, so the default has been set to integer. Therefore, to export any float datatype, the argument should be passed explicitly.<br/>
+## 4. Converting TIF to CSV
+GeoTIFF files can be converted to CSV files using **pyrsgis**. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
+Import the function:<br/>
+```Python
+from pyrsgis.convert import rastertocsv
+``
 
-Raster files can also be easily converted into CSV files which is mainly required for statistical analysis.<br/>
-`from pyrsgis.convert import rastertocsv`<br/>
+* To convert all the bands present in a folder:
+```Python
+your_dir = r"D:/your_raster_directory"
+out_file_path = r"D:/yourFilename.csv"
 
-Assign the directory where raster files are located<br/>
-`yourDir = "D:\\yourRasterFolder"`<br/>
-`rastertocsv(yourDir, filename='yourFilename.csv')`<br/>
+rastertocsv(your_dir, filename=out_file_path)
+```
 
-Generally the NoData or NULL values in the raster become random negative values, negatives can be removed using:<br/>
-`rastertocsv(yourDir, filename='yourFilename.csv', negative=False)`<br/>
+Generally the NoData or NULL values in the raster become random negative values, negatives can be removed using the `negative` argument:<br/>
+```Python
+rastertocsv(your_dir, filename=out_file_path, negative=False)
+```
 
-At times the NoData or NULL values in raster become '127' or '65536', they can also be removed by declaring explicitly<br/>
-`rastertocsv(yourDir, filename='yourFilename.csv', remove=[127, 65536])`<br/>
-This is a trial and check process, please check the generated CSV file for such issues<br/>
+At times the NoData or NULL values in raster become '127' or '65536', they can also be removed by declaring explicitly.<br/>
+```Python
+rastertocsv(your_dir, filename=out_file_path, remove=[127, 65536])
+```
+This is a trial and check process, please check the generated CSV file for such issues and handle as required.<br/>
 
-Bad rows in the CSV file represents the cell that has zero values in all the rasters and takes a lot of storage space, it can be eliminated using:<br/>
-`rastertocsv(yourDir, filename='yourFilename.csv', badrows=False)`<br/>
+Similarly, there are bad rows in the CSV file, representing zero value in all the bands. This takes a lot of unnecessary space on drive, it can be eliminated using:<br/>
+```Python
+rastertocsv(your_dir, filename=out_file_path, badrows=False)
+```
 
-pyrsgis also allows the user to quickly create the northing and easting coordinates using a reference raster<br/>
-The flip option can be use to flip the resulting rasters.<br/>
+## 5. Creating Northing and easting using a reference raster
+**pyrsgis** allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
+[image]
 
-`from pyrsgis.raster import northing, easting`<br/>
+To generate these GeoTIFF files, start by importing the function:
+```Python
+from pyrsgis.raster import northing, easting
 
-`referenceRaster = 'E:/Example/landcover.tif'`<br/>
-`northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True)`<br/>
-`easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False)`<br/>
+reference_file_path = r'D:/your_reference_raster.tif'
+
+northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True)
+easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False)
+```
+As the name suggests, the `flip` argument flips the resulting rasters.<br/>
+
 
