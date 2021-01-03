@@ -68,7 +68,53 @@ raster.export(arr, ds, out_file_path)
 ```
 where, `arr` should be a 2D array.<br/>
 
-## 3. Reading directly from .tar.gz files (beta)
+## 3. Converting TIF to CSV
+GeoTIFF files can be converted to CSV files using **pyrsgis**. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
+Import the function:<br/>
+```Python
+from pyrsgis.convert import rastertocsv
+``
+
+* To convert all the bands present in a folder:
+```Python
+your_dir = r"D:/your_raster_directory"
+out_file_path = r"D:/yourFilename.csv"
+
+rastertocsv(your_dir, filename=out_file_path)
+```
+
+Generally the NoData or NULL values in the raster become random negative values, negatives can be removed using the `negative` argument:<br/>
+```Python
+rastertocsv(your_dir, filename=out_file_path, negative=False)
+```
+
+At times the NoData or NULL values in raster become '127' or '65536', they can also be removed by declaring explicitly.<br/>
+```Python
+rastertocsv(your_dir, filename=out_file_path, remove=[127, 65536])
+```
+This is a trial and check process, please check the generated CSV file for such issues and handle as required.<br/>
+
+Similarly, there are bad rows in the CSV file, representing zero value in all the bands. This takes a lot of unnecessary space on drive, it can be eliminated using:<br/>
+```Python
+rastertocsv(your_dir, filename=out_file_path, badrows=False)
+```
+
+## 4. Creating Northing and easting using a reference raster
+**pyrsgis** allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
+[image]
+
+To generate these GeoTIFF files, start by importing the function:
+```Python
+from pyrsgis.raster import northing, easting
+
+reference_file_path = r'D:/your_reference_raster.tif'
+
+northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True)
+easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False)
+```
+As the name suggests, the `flip` argument flips the resulting rasters.<br/>
+
+## 5. Reading directly from .tar.gz files (beta)
 Currently, only Landsat data is supported.<br/>
 ```Python
 import pyrsgis
@@ -145,51 +191,5 @@ out_file_path = r'D:/your_ndvi.tif'
 your_data.export(your_ndvi, out_file_path, datatype='float')
 ```
 Be careful with the float type of NDVI.<br/>
-
-## 4. Converting TIF to CSV
-GeoTIFF files can be converted to CSV files using **pyrsgis**. Every band is flattened to a single-dimensional array, and converted to CSV. These are very useful for statistical analysis.<br/>
-Import the function:<br/>
-```Python
-from pyrsgis.convert import rastertocsv
-``
-
-* To convert all the bands present in a folder:
-```Python
-your_dir = r"D:/your_raster_directory"
-out_file_path = r"D:/yourFilename.csv"
-
-rastertocsv(your_dir, filename=out_file_path)
-```
-
-Generally the NoData or NULL values in the raster become random negative values, negatives can be removed using the `negative` argument:<br/>
-```Python
-rastertocsv(your_dir, filename=out_file_path, negative=False)
-```
-
-At times the NoData or NULL values in raster become '127' or '65536', they can also be removed by declaring explicitly.<br/>
-```Python
-rastertocsv(your_dir, filename=out_file_path, remove=[127, 65536])
-```
-This is a trial and check process, please check the generated CSV file for such issues and handle as required.<br/>
-
-Similarly, there are bad rows in the CSV file, representing zero value in all the bands. This takes a lot of unnecessary space on drive, it can be eliminated using:<br/>
-```Python
-rastertocsv(your_dir, filename=out_file_path, badrows=False)
-```
-
-## 5. Creating Northing and easting using a reference raster
-**pyrsgis** allows to quickly create the northing and easting rasters using a reference raster, as shown below:<br/>
-[image]
-
-To generate these GeoTIFF files, start by importing the function:
-```Python
-from pyrsgis.raster import northing, easting
-
-reference_file_path = r'D:/your_reference_raster.tif'
-
-northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True)
-easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False)
-```
-As the name suggests, the `flip` argument flips the resulting rasters.<br/>
 
 
