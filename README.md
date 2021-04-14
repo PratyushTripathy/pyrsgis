@@ -132,7 +132,7 @@ As the name suggests, the `flip` argument flips the resulting rasters.<br/>
 </p>
 </details>
 
-<details><summary><b>5. Shifting raster layers (beta)</b></summary>
+<details><summary><b>5. Shifting raster layers</b></summary>
 <p>
 You can shift the raster layers using either the 'shift' or 'shift_file' function. The 'shift' function allows to shift the raster in the backend, whereas, the 'shift_file' directly shifts the GeoTIF file and stores another file.<br/>
   
