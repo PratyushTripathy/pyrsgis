@@ -132,7 +132,37 @@ As the name suggests, the `flip` argument flips the resulting rasters.<br/>
 </p>
 </details>
 
-<details><summary><b>5. Reading directly from .tar.gz files (beta)</b></summary>
+<details><summary><b>5. Shifting raster layers (beta)</b></summary>
+<p>
+You can shift the raster layers using either the 'shift' or 'shift_file' function. The 'shift' function allows to shift the raster in the backend, whereas, the 'shift_file' directly shifts the GeoTIF file and stores another file.<br/>
+  
+To shift in the backend:<br/>
+```Python
+from pyrsgis import raster
+
+shifted_ds = raster.shift(ds, x, y, shift_type)
+```
+Here, 'ds' is the data source object that is created when the raster is read using 'raster.read' command. 'x' and 'y' are the distance for shifting the raster. The 'shift_type' command let's you move the raster either by the raster units or number of cells, the valid options are 'unit' and 'cell'. By default, the 'shift_type' is 'unit'.<br/>
+
+To shift a GeoTIFF file:<br/>
+```Python
+from pyrsgis import raster
+
+# Define the path to the input and output file
+infile = r"D:/path_to_your_file/input.tif"
+outfile = r"D:/path_to_your_file/shifted_output.tif"
+
+# Define the amount of shift required
+delta_x = 15
+delta_y = 11.7
+
+raster.shift_file(infile, x=delta_x, y=delta_y, outfile=outfile, shift_type='unit', dtype='uint16')
+```
+Most of the parameters are same as the 'shift' function. The 'dtype' parameter is same as used in the 'raster.export' function.<br/>
+</p>
+</details>
+  
+<details><summary><b>6. Reading directly from .tar.gz files (beta)</b></summary>
 <p>
   
 Currently, only Landsat data is supported.<br/>
@@ -205,7 +235,7 @@ Normalised difference index between any two bands can be computed using:<br/>
 ```Python
 norm_diff = your_data.nordif(bandNumber2, bandNumber1)
 ```
-This computes (band2-band1)/(band2+band1) in the back end and returns a numpy array. THe resulting arracy can be exported using:<br/>
+This computes (band2-band1)/(band2+band1) in the back end and returns a numpy array. The resulting array can be exported using:<br/>
 ```Python
 out_file_path = r'D:/your_ndvi.tif'
 your_data.export(your_ndvi, out_file_path, datatype='float')
