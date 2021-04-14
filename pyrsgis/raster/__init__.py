@@ -1,6 +1,6 @@
 #pyrsgis/raster
 
-import gdal
+import os, gdal
 import numpy as np
 
 class createDS():
@@ -68,7 +68,7 @@ raster_dtype = {'byte': gdal.GDT_Byte,
                 'float': gdal.GDT_Float32,
                 'float32': gdal.GDT_Float32,
                 'float64': gdal.GDT_Float64,
-                'int': gdal.GDT_Byte,
+                'int': gdal.GDT_Int16,
                 'int16': gdal.GDT_Int16,
                 'int32': gdal.GDT_Int32,
                 'uint8': gdal.GDT_Byte,
@@ -76,7 +76,7 @@ raster_dtype = {'byte': gdal.GDT_Byte,
                 'uint32': gdal.GDT_UInt32,
                 }
 
-def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1):
+def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1, nodata=-9999):
     if len(band.shape) == 3:
         layers, row, col = band.shape
     elif len(band.shape) == 2:
@@ -104,16 +104,16 @@ def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1):
     if type(bands) == type(1):
         if layers > 1:
             outdata.GetRasterBand(nBands).WriteArray(band[bands-1, :, :])
-            outdata.GetRasterBand(nBands).SetNoDataValue(-9999)
+            outdata.GetRasterBand(nBands).SetNoDataValue(nodata)
         else:
             outdata.GetRasterBand(nBands).WriteArray(band)
-            outdata.GetRasterBand(nBands).SetNoDataValue(-9999)
+            outdata.GetRasterBand(nBands).SetNoDataValue(nodata)
     elif (type(bands) == type('all') and bands.lower()=='all') or\
          type(bands) == type([1, 2, 3])or\
          type(bands) == type(tuple()):
         for n, bandNumber in enumerate(outBands):
             outdata.GetRasterBand(n+1).WriteArray(band[bandNumber-1,:,:])
-            outdata.GetRasterBand(n+1).SetNoDataValue(-9999)
+            outdata.GetRasterBand(n+1).SetNoDataValue(nodata)
     outdata.FlushCache() 
     outdata = None
 
@@ -151,3 +151,35 @@ def radiometricCorrection(arr, byte=8):
         arr = (arr - arr.min()) / (arr.max() - arr.min())
     arr = arr.astype(int)
     return(arr)
+
+def shift(ds, x=0, y=0, shift_type='unit'):
+    out_transform = list(ds.GeoTransform)
+
+    if shift_type.lower() in ['unit', 'cell']:
+        if shift_type.lower() == 'unit':
+            delta_x = x
+            delta_y = y
+        elif shift_type.lower() == 'cell':
+            delta_x = x * out_transform[1]
+            delta_y = -y * out_transform[-1]
+
+        out_transform[0] +=  delta_x
+        out_transform[3] +=  delta_y
+        ds.GeoTransform = tuple(out_transform)
+
+        return(ds)
+    else:
+        print("Invalid shift_type. Acceptable options are " + \
+              "'unit' and 'cell'. Please see the documentation at " + \
+              "https://pypi.org/project/pyrsgis/")
+
+def shift_file(file, x=0, y=0, outfile=None, shift_type='unit', dtype='uint16'):
+    ds, arr = read(file)
+    out_ds = shift(ds, x, y, shift_type)
+
+    if outfile == None:
+        outfile = '%s_shifted.tif' % (os.path.splitext(file)[0])
+
+    export(arr, ds, filename=outfile, dtype=dtype, bands='all')
+
+

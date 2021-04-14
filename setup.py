@@ -5,19 +5,22 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrsgis",
-    version="0.3.1",
+    version="0.3.5",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
-    description="Reading and writing GeoTIFFs made easy. Proces satellite data directly from TAR files.",
+    description="A package to read, process and export GeoTIFFs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/PratyushTripathy/pyrsgis",
+    url="https://github.com/pratkrt/Python-for-Remote-Sensing-and-GIS",
     packages=setuptools.find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
         "License :: OSI Approved :: MIT License",
         "Operating System :: Microsoft :: Windows",
-        "Operating System :: MacOS",
+        "Operating System :: Unix",
+        "Operating System :: MacOS"
     ],
 )
