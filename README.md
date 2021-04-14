@@ -5,7 +5,7 @@ To install using pip, see the PyPI page - [link](https://pypi.org/project/pyrsgi
 To install using conda, see the Anaconda page - [link](https://anaconda.org/pratyusht/pyrsgis)
 
 **Recommended citation:**<br/>
-Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
+Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.5 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3470674.svg)](https://doi.org/10.5281/zenodo.3470674)
 
 # Sample code
 <details><summary><b>1. Reading .tif extension file</b></summary>
