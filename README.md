@@ -140,7 +140,11 @@ To shift in the backend:<br/>
 ```Python
 from pyrsgis import raster
 
-shifted_ds = raster.shift(ds, x, y, shift_type)
+# Define the amount of shift required
+delta_x = 15
+delta_y = 11.7
+
+shifted_ds = raster.shift(ds, x=delta_x, y=delta_y, shift_type)
 ```
 Here, 'ds' is the data source object that is created when the raster is read using 'raster.read' command. 'x' and 'y' are the distance for shifting the raster. The 'shift_type' command let's you move the raster either by the raster units or number of cells, the valid options are 'unit' and 'cell'. By default, the 'shift_type' is 'unit'.<br/>
 
