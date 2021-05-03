@@ -140,8 +140,8 @@ The `value` argument defaults to `number`. It can be changed to `normalised` to 
 
 
 ```Python
-northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True, value='number', dtype='int16')
-easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False, value='number', dtype='int16')
+northing(reference_file_path, outFile='pyrsgis_northing.tif', flip=True, value='number', dtype='int16')
+easting(reference_file_path, outFile='pyrsgis_easting.tif', flip=False, value='number', dtype='int16')
 ```
 </p>
 </details>
