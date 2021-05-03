@@ -22,7 +22,7 @@ file_path = r'D:/your_file_name.tif'
 ```Python
 ds, arr = raster.read(file_path, bands='all')
 ```
-where, **ds** is the data source similar to GDAL and **arr** is the numpy array that contains all the bands of the input raster. The **arr** can be 2D or 3D depending on the input data. One can check the shape of the array using the `print(arr.shape)` command. The `bands` argument in the `raster.read` function defaults to `'all'`.<br/>
+where, `ds` is the data source similar to GDAL and `arr` is the numpy array that contains all the bands of the input raster. The `arr` can be 2D or 3D depending on the input data. One can check the shape of the array using the `print(arr.shape)` command. The `bands` argument in the `raster.read` function defaults to `'all'`.<br/>
 
 * To read a list of bands of a stacked satellite image:<br/>
 ```Python
@@ -54,7 +54,8 @@ out_file_path = r'D:/sample_file_all_bands.tif'
 raster.export(arr, ds, out_file_path, dtype='int', bands='all')
 ```
 The `dtype` argument in the above function defaults to `'int'`, which is 8-bit integer. Please be careful to change this while exporting arrays with large values. Similarly, to export float type array (eg. NDVI), use `dtype = 'float'`. Data type of high pixel-depth, e.g. Integer32, Integer64, or float type uses more space on hard drive, so the default has been set to integer. To export any float datatype, the argument should be passed explicitly.<br/>
-These are the options for the `dtype` argument: 'byte', 'cfloat32', 'cfloat64', 'cint16', 'cint32', 'float32', 'float64', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
+These are the options for the `dtype` argument: `byte`, `cfloat32`, `cfloat64`, `cint16`, `cint32`, `float32`, `float64`, `int16`, `int32`, `uint8`, `uint16`, `uint32`.<br/>
+The NoData value can be explicitly defined using the `nodata` parameter, this defaults to `-9999`.
 
 * To export a list of bands of a 3D array:<br/>
 ```Python
@@ -74,6 +75,12 @@ out_file_path = r'D:/sample_file.tif'
 raster.export(arr, ds, out_file_path)
 ```
 where, `arr` should be a 2D array.<br/>
+
+* Example with all default parameters:<br/>
+```Python
+out_file_path = r'D:/sample_file.tif'
+raster.export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1, nodata=-9999)
+```
 </p>
 </details>
 
@@ -129,6 +136,13 @@ northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True)
 easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False)
 ```
 As the name suggests, the `flip` argument flips the resulting rasters.<br/>
+The `value` argument defaults to `number`. It can be changed to `normalised` to get a normalised layer. The other option for `value` argument is `coordinates`, which produces the raster layer with cell centroids. Please note that if the `value` argument is set to `normalised`, it will automatically adjust the flip value, i.e. False, both in easting and northing functions. Similarly, the `dtype` parameter auto-adjusts with the data type, but can be changed to a higher pixel depth when `value` argument is `number`. Example with all parameters:<br/>
+
+
+```Python
+northing(reference_file_path, outFile= r'D:/pyrsgis_northing.tif', flip=True, value='number', dtype='int16')
+easting(reference_file_path, outFile= r'D:/pyrsgis_easting.tif', flip=False, value='number', dtype='int16')
+```
 </p>
 </details>
 
@@ -140,11 +154,19 @@ To shift in the backend:<br/>
 ```Python
 from pyrsgis import raster
 
+# Define the path to the input file and get the data source
+infile = r"D:/path_to_your_file/input.tif"
+ds, arr = raster.read(infile)
+
 # Define the amount of shift required
 delta_x = 15
 delta_y = 11.7
 
+# shift the raster
 shifted_ds = raster.shift(ds, x=delta_x, y=delta_y, shift_type)
+
+# if you wish to export
+raster.export(arr, ds, out_file, dtype='int', bands=1, nodata=-9999)
 ```
 Here, 'ds' is the data source object that is created when the raster is read using 'raster.read' command. 'x' and 'y' are the distance for shifting the raster. The 'shift_type' command let's you move the raster either by the raster units or number of cells, the valid options are 'unit' and 'cell'. By default, the 'shift_type' is 'unit'.<br/>
 
@@ -160,6 +182,7 @@ outfile = r"D:/path_to_your_file/shifted_output.tif"
 delta_x = 15
 delta_y = 11.7
 
+# shift the raster
 raster.shift_file(infile, x=delta_x, y=delta_y, outfile=outfile, shift_type='unit', dtype='uint16')
 ```
 Most of the parameters are same as the 'shift' function. The 'dtype' parameter is same as used in the 'raster.export' function.<br/>
