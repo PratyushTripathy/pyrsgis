@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrsgis",
-    version="0.3.5",
+    version="0.3.8",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
     description="A package to read, process and export GeoTIFFs.",

@@ -129,19 +129,44 @@ def northEast(array, layer='both'):
     elif layer=='east':
         return(east)
 
-def northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True):
+def northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True, value='number', dtype='int16'):
     ds, band = read(referenceFile, bands=1)
-    north = northEast(band, layer='north')
+    north = northEast(band, layer='north')    
+
+    flip = False if value.lower() == 'coordinates' else True
+    
     if flip==True:
         north = np.flip(north, axis=0)
-    export(north, ds, filename=outFile, dtype='int32')
 
-def easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False):
+    if value.lower() == 'coordinates':
+        north = list(ds.GeoTransform)[3] + (north * list(ds.GeoTransform)[-1] - list(ds.GeoTransform)[-1]/2)
+        dtype = 'float32'
+    elif value.lower() == 'normalised':
+        north += 1
+        north /= north.max()
+        dtype = 'float32'
+
+    export(north, ds, filename=outFile, dtype=dtype)
+
+def easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False, value='number', dtype='int16'):
     ds, band = read(referenceFile, bands=1)
     east = northEast(band, layer='east')
+
+    flip = False if value.lower() == 'coordinates' else True
+    
     if flip==True:
         east = np.flip(east, axis=1)
-    export(east, ds, filename=outFile, dtype='int32')
+        
+    if value.lower() == 'coordinates':
+        east = list(ds.GeoTransform)[0] + (east * list(ds.GeoTransform)[1] - list(ds.GeoTransform)[1]/2)
+        dtype = 'float32'
+        
+    if value.lower() == 'normalised':
+        east += 1
+        east /= east.max()
+        dtype = 'float32'
+
+    export(east, ds, filename=outFile, dtype=dtype)
     
 def radiometricCorrection(arr, byte=8):
     if len(arr.shape) == 3:
