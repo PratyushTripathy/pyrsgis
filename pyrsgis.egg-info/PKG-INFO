@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyrsgis
-Version: 0.3.8
+Version: 0.3.9
 Summary: A package to read, process and export GeoTIFFs.
 Home-page: https://github.com/pratkrt/Python-for-Remote-Sensing-and-GIS
 Author: Pratyush Tripathy

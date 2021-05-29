@@ -8,7 +8,7 @@ import matplotlib.cm as cm
 import numpy as np
 import warnings, shutil
 import tarfile, tempfile
-import ..raster
+from ..raster import read, export, createDS
 
 try:
     from matplotlib_scalebar.scalebar import ScaleBar
@@ -98,14 +98,14 @@ class readtar():
                     os.mkdir(self.tempDir)
                 os.chdir(self.tempDir)
                 self.tar.extractall(members=self.generatorTAR(nBand))
-            self.ds, self.band = raster.read(self.createdFile[0], bands=1)
+            self.ds, self.band = read(self.createdFile[0], bands=1)
             if self.initiated == False:
                 self.rows = self.ds.RasterYSize
                 self.cols = self.ds.RasterXSize
                 self.projection = self.ds.GetProjection()
                 self.geotransform = self.ds.GetGeoTransform()
                 self.initiated = True
-            self.ds = raster.createDS(self.ds)
+            self.ds = createDS(self.ds)
             # Goes back to the old directory and deletes the temporary directory
             os.chdir(self.oldDir)
             self.clearMemory()
@@ -120,7 +120,7 @@ class readtar():
             tempArray = np.random.randint(1, size=(len(bands), self.rows, self.cols))
             for n, index in enumerate(bands):
                 tempArray[n,:,:] = self.getband(index)
-        raster.export(tempArray, self.ds, filename, bands='All')
+        export(tempArray, self.ds, filename, bands='All')
 
     #This method calculates the normalised differnce of any two given bands  
     def nordif(self, band2, band1):
@@ -130,7 +130,7 @@ class readtar():
 
     #This method saves the processed image in the drive  
     def export(self, array, outfile='pyrsgisRaster.tif', dtype='int'):
-        raster.export(array, self.ds, filename=outfile, dtype=dtype)
+        export(array, self.ds, filename=outfile, dtype=dtype)
 
     #This method clears everything stored in the virtual momry to reduce load   
     def clearMemory(self):
@@ -211,7 +211,7 @@ class readtif():
 
     #This method returns the band in the form of an array
     def getband(self, nBand, datatype='int'):
-        self.ds, self.band = raster.read(self.name, bands=nBand)
+        self.ds, self.band = read(self.name, bands=nBand)
         if datatype == 'float':
             self.band = self.band.astype(float)
         if self.initiated == False:
@@ -234,7 +234,7 @@ class readtif():
 
     #This method saves the processed image in the drive  
     def export(self, array, outfile='pyrsgisRaster.tif', datatype='int'):
-        raster.export(array, self.ds, filename=outfile, dtype=datatype)
+        export(array, self.ds, filename=outfile, dtype=datatype)
         
     #This method clears everything stored in the virtual momry to reduce load   
     def clearMemory(self):

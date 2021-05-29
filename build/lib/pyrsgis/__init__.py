@@ -5,8 +5,8 @@ Compatible with Python versions 3+
 """
 
 name = 'pyrsgis'
-__version__ = "0.3.8"
+__version__ = "0.3.9"
 
 
 #Importing all functions from beta
-from beta import *
+from .beta import *
