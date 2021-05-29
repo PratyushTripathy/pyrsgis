@@ -9,7 +9,7 @@ To install using conda, see the Anaconda page - [link](https://anaconda.org/prat
 **Recommended citation:**<br/>
 Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3. Available at https://pypi.org/project/pyrsgis/.
 
-# Sample code (click below to expand)
+# Sample code (click to expand)
 <details><summary><b>1. Reading .tif extension file</b></summary>
 <p>
 Import the module and define the input file path.<br/>
