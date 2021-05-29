@@ -1,13 +1,15 @@
 # Python-for-Remote-Sensing-and-GIS
-*pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. *pyrsgis* also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcomed for feedback and technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com) or connect to me at [LinkedIn](https://www.linkedin.com/in/pratyush-tripathy-b28a47146/) or [Twitter](https://twitter.com/i_pratyusht).
+*pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. There are several other funtions available in this package that ease raster pre-processing, currently focused on machine learning applications.<br/>
+
+*pyrsgis* also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcome for providing feedback and getting technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com) or connect to me at [LinkedIn](https://www.linkedin.com/in/pratyush-tripathy-b28a47146/) or [Twitter](https://twitter.com/i_pratyusht).
 
 To install using pip, see the PyPI page - [link](https://pypi.org/project/pyrsgis/)<br/>
 To install using conda, see the Anaconda page - [link](https://anaconda.org/pratyusht/pyrsgis)
 
 **Recommended citation:**<br/>
-Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3.x. Available at https://pypi.org/project/pyrsgis/.
+Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.3. Available at https://pypi.org/project/pyrsgis/.
 
-# Sample code
+# Sample code (click below to expand)
 <details><summary><b>1. Reading .tif extension file</b></summary>
 <p>
 Import the module and define the input file path.<br/>
@@ -188,8 +190,57 @@ raster.shift_file(infile, x=delta_x, y=delta_y, outfile=outfile, shift_type='uni
 Most of the parameters are same as the 'shift' function. The 'dtype' parameter is same as used in the 'raster.export' function.<br/>
 </p>
 </details>
+
+<details><summary><b>6. Create image chips for Convolutional Neural Network (CNN)</b></summary>
+<p>
+CNNs require image chips for training and prediction. Remote sensing images are large sized two or three-dimesional images, this module enables creating image chips directly from TIF files or arrays. The input data and size of image chips are required.<br/>
+
+To create image chips from array:<br/>
+```Python
+from pyrsgis import raster
+from pyrsgis.ml import imageChipsFromArray
   
-<details><summary><b>6. Reading directly from .tar.gz files (beta)</b></summary>
+# read the TIF file(s) (both are of different sizes - for demonstration)
+single_band_file = r'path/to/single_band.tif'
+multi_band_file = r'path/to/multi_band.tif' # this is a Landsat 5 TM image (7 bands stacked)
+
+# read the files as array using pyrsgis raster.read module
+_, single_band_array = raster.read(single_band_file)
+_, multi_band_array = raster.read(multi_band_file)
+
+# create image chips
+single_band_chips = imageChipsFromArray(single_band_array, x_size=5, y_size=5))
+multi_band_chips = imageChipsFromArray(multi_band_array, x_size=5, y_size=5))
+
+print(single_band_chips.shape)
+print(multi_band_chips.shape)
+```
+The output:<br/>
+```
+(91125, 5, 5)
+(987552, 5, 5, 7)
+```
+  
+Image chips can also be generated directly from TIF files using following:<br/>
+```Python
+from pyrsgis.ml import imageChipsFromFile
+  
+# read the TIF file(s) (both are of different sizes - for demonstration)
+single_band_file = r'path/to/single_band.tif'
+multi_band_file = r'path/to/multi_band.tif' # this is a Landsat 5 TM image (7 bands stacked)
+
+# create image chips
+single_band_chips = imageChipsFromFile(single_band_file, x_size=5, y_size=5))
+multi_band_chips = imageChipsFromFile(multi_band_file, x_size=5, y_size=5))
+
+print(single_band_chips.shape)
+print(multi_band_chips.shape)
+```
+This will result in the same output as the one above.<br/>
+</p>
+</details>
+
+<details><summary><b>7. Reading directly from .tar.gz files (beta)</b></summary>
 <p>
   
 Currently, only Landsat data is supported.<br/>
