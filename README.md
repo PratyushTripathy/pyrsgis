@@ -1,5 +1,5 @@
 # Python-for-Remote-Sensing-and-GIS
-*pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. There are several other funtions available in this package that ease raster pre-processing, currently focused on machine learning applications.<br/>
+*pyrsgis* enables the user to read, process and export GeoTIFFs. The module is built on the GDAL library, but is much more convenient when it comes to reading and exporting GeoTIFs. There are several other functions available in this package that ease raster pre-processing, currently focused on machine learning applications.<br/>
 
 *pyrsgis* also supports reading satellite data directly from .tar.gz files. However, reading from .tar.gz files is currently in its beta phase. Please do not use this package for commercial purpose without my explicit permission. Researchers/ academicians are welcome for providing feedback and getting technical support. Since this is an open-source volunatry project, collaborations are most welcome. Please write to me at [pratkrt@gmail.com](mailto:pratkrt@gmail.com) or connect to me at [LinkedIn](https://www.linkedin.com/in/pratyush-tripathy-b28a47146/) or [Twitter](https://twitter.com/i_pratyusht).
 
