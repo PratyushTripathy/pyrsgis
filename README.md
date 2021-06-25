@@ -55,7 +55,7 @@ In all the below examples, it is assumed that the number of rows and columns, an
 out_file_path = r'D:/sample_file_all_bands.tif'
 raster.export(arr, ds, out_file_path, dtype='int', bands='all')
 ```
-The `dtype` argument in the above function defaults to `'int'`, which is 8-bit integer. Please be careful to change this while exporting arrays with large values. Similarly, to export float type array (eg. NDVI), use `dtype = 'float'`. Data type of high pixel-depth, e.g. Integer32, Integer64, or float type uses more space on hard drive, so the default has been set to integer. To export any float datatype, the argument should be passed explicitly.<br/>
+The `dtype` argument in the above function by default is set to `'default'`, which is `'int'`--16-bit integer. If the data type in the provided `ds` is not `int` and the paramter is set to `default`, then the data type of the `ds` will be used. If there is a disagreement and the `dtype` argument is explicitly specified, it will override the data type of `ds`. Please be careful to change this while exporting arrays with large values. Similarly, to export float type array (eg. NDVI), use `dtype = 'float'`. Data type of high pixel-depth, e.g. Integer32, Integer64, or float type uses more space on hard drive, so the default has been set to integer. To export any float datatype, the argument should be passed explicitly.<br/>
 These are the options for the `dtype` argument: `byte`, `cfloat32`, `cfloat64`, `cint16`, `cint32`, `float32`, `float64`, `int16`, `int32`, `uint8`, `uint16`, `uint32`.<br/>
 The NoData value can be explicitly defined using the `nodata` parameter, this defaults to `-9999`.
 
@@ -78,10 +78,13 @@ raster.export(arr, ds, out_file_path)
 ```
 where, `arr` should be a 2D array.<br/>
 
+* Export the raster with compression:<br/>
+Compression type can also be defined while exporting the raster by using the `compress` parameter. `LZW`. `DEFLATE`, etc. are a couple of options. Defaults to `None`.<br/>
+  
 * Example with all default parameters:<br/>
 ```Python
 out_file_path = r'D:/sample_file.tif'
-raster.export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1, nodata=-9999)
+raster.export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1, nodata=-9999, compress=None)
 ```
 </p>
 </details>
