@@ -1,7 +1,13 @@
 #pyrsgis/raster
 
-import os, gdal
+import os
 import numpy as np
+
+# add exception for deprecated version of gdal
+try:
+    import gdal
+except:
+    from osgeo import gdal
 
 class createDS():
 
@@ -11,6 +17,7 @@ class createDS():
         self.RasterCount = ds.RasterCount
         self.RasterXSize = ds.RasterXSize
         self.RasterYSize = ds.RasterYSize
+        self.DataType = ds.GetRasterBand(1).DataType
 
     def GetProjection(self):
         return(self.Projection)
@@ -26,6 +33,9 @@ class createDS():
 
     def RasterYSize(self):
         return(self.RasterYSize)
+
+    def DataType(self):
+        return(self.DataType)
 
 def extractBands(ds, bands):
     if ds.RasterCount > 1:
@@ -76,7 +86,20 @@ raster_dtype = {'byte': gdal.GDT_Byte,
                 'uint32': gdal.GDT_UInt32,
                 }
 
-def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1, nodata=-9999):
+def export(band, ds, filename='pyrsgis_outFile.tif', dtype='default', bands=1, nodata=-9999, compress=None):
+    """
+    > If dtype is default and matches with ds, use int16.
+    > If dtype is default and disagrees with ds, use ds datatype.
+    > If a dtype is specified, use that.
+    """
+
+    if (dtype == 'default') and (ds.DataType == raster_dtype['int']):
+        dtype = 'int'
+    elif (dtype == 'default') and (ds.DataType != raster_dtype['int']):
+        dtype = list(raster_dtype.keys())[list(raster_dtype.values()).index(ds.DataType)]
+    else:
+        pass
+
     if len(band.shape) == 3:
         layers, row, col = band.shape
     elif len(band.shape) == 2:
@@ -98,7 +121,11 @@ def export(band, ds, filename='pyrsgis_outFile.tif', dtype='int', bands=1, nodat
         nBands = len(bands)
         outBands = bands
     driver = gdal.GetDriverByName("GTiff")
-    outdata = driver.Create(filename, col, row, nBands, raster_dtype[dtype.lower()])
+
+    if compress == None:
+        outdata = driver.Create(filename, col, row, nBands, raster_dtype[dtype.lower()])
+    else:
+        outdata = driver.Create(filename, col, row, nBands, raster_dtype[dtype.lower()], options=['COMPRESS=%s'%(compress)])
     outdata.SetGeoTransform(ds.GetGeoTransform())
     outdata.SetProjection(ds.GetProjection())
     if type(bands) == type(1):

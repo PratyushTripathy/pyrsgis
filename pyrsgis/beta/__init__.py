@@ -2,7 +2,11 @@
 
 #Importing all the necessary libraries
 import os, glob, datetime
-import gdal
+# add exception for deprecated version of gdal
+try:
+    import gdal
+except:
+    from osgeo import gdal
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
@@ -13,8 +17,8 @@ from ..raster import read, export, createDS
 try:
     from matplotlib_scalebar.scalebar import ScaleBar
 except:
-    print("Warning! matplotlib_scalebar library not found. You may not be able to export map directly.")
-    
+    pass
+        
 #Disabling annoying warnings
 warnings.filterwarnings("ignore")
 
@@ -311,6 +315,9 @@ def display(band, maptitle = 'Pyrsgis Raster', cmap='PRGn'):
     legend.set_array(np.array([band.min(), band.min()+band.max()/2, band.max()]))
     plt.colorbar(legend)
     plt.imshow(band, cmap=cmap)
-    scalebar = ScaleBar(30)
+    try:
+        scalebar = ScaleBar(30)
+    except:
+        raise ModuleNotFoundError("Please install matplotlib_scalebar library to use this feature.")
     plt.gca().add_artist(scalebar)
     plt.show()

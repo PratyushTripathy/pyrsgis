@@ -2,7 +2,6 @@
 
 import os, glob
 import numpy as np
-import gdal
 import csv
 from ..raster import read
 from ..raster import export
