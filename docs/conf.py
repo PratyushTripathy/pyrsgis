@@ -13,8 +13,10 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-import sphinx_bootstrap_theme
+autodoc_mock_imports = ['pyrsgis', 'sphinx_bootstrap_theme']
+
 import pyrsgis
+import sphinx_bootstrap_theme
 
 # -- Project information -----------------------------------------------------
 
