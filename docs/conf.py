@@ -13,8 +13,9 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-autodoc_mock_imports = ['pyrsgis', 'sphinx_bootstrap_theme']
+autodoc_mock_imports = ['mock', 'pyrsgis', 'sphinx_bootstrap_theme']
 
+import os, sys, mock
 import pyrsgis
 import sphinx_bootstrap_theme
 
@@ -25,15 +26,31 @@ copyright = '2021, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
 # The full version, including alpha/beta/rc tags
-release = '0.4.0'
+release = pyrsgis.__version__
 
 
 # -- General configuration ---------------------------------------------------
+sys.path.insert(0, os.path.abspath('../'))
 
+MOCK_MODULES = [
+    'numpy',
+    'GDAL']
+
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.Mock()
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
