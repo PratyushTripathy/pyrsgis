@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 packages=setuptools.find_packages()
-packages = packages + ['numpy', 'scikit-learn']
+#packages = packages + ['numpy', 'scikit-learn']
 
 setuptools.setup(
     name="pyrsgis",
