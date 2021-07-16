@@ -13,10 +13,9 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-autodoc_mock_imports = ['mock', 'pyrsgis', 'sphinx_bootstrap_theme']
+autodoc_mock_imports = ['mock', 'sphinx_bootstrap_theme']
 
 import os, sys, mock
-import pyrsgis
 import sphinx_bootstrap_theme
 
 # -- Project information -----------------------------------------------------
@@ -26,7 +25,15 @@ copyright = '2021, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
 # The full version, including alpha/beta/rc tags
-release = pyrsgis.__version__
+try:
+    release = pyrsgis.__version__
+except:
+    with open('../pyrsgis/__init__.py') as f:
+        for line in f:
+            if line.find("__version__") >= 0:
+                version = line.split("=")[1].strip()
+                version = version.strip('"').strip("'")
+                continue
 
 
 # -- General configuration ---------------------------------------------------

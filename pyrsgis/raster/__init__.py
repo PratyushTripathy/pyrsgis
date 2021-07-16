@@ -156,22 +156,37 @@ def northEast(array, layer='both'):
     elif layer=='east':
         return(east)
 
-def northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True, value='number', dtype='int16'):
-    ds, band = read(referenceFile, bands=1)
-    north = northEast(band, layer='north')    
+def northEastCoordinates(ds, array, layer='both'):
+    if layer.lower() == 'north': north = northEast(array, layer='north')
+    if layer.lower() == 'east': east = northEast(array, layer='east')
+    if layer.lower() == 'both': north, east = northEast(array, layer='both')
 
-    flip = False if value.lower() == 'coordinates' else True
+    if 'north' in locals().keys(): north = list(ds.GeoTransform)[3] + (north * list(ds.GeoTransform)[-1] - list(ds.GeoTransform)[-1]/2)
+    if 'east' in locals().keys(): east = list(ds.GeoTransform)[0] + (east * list(ds.GeoTransform)[1] - list(ds.GeoTransform)[1]/2)
+        
+    if layer=='both':
+        return(north, east)
+    elif layer=='north':
+        return(north)
+    elif layer=='east':
+        return(east)
     
-    if flip==True:
-        north = np.flip(north, axis=0)
+def northing(referenceFile, outFile='pyrsgis_northing.tif', flip=True, value='number', dtype='int16'):
+    ds, band = read(referenceFile, bands=1)  
+    north = northEast(band, layer='north') 
 
     if value.lower() == 'coordinates':
+        flip = False
         north = list(ds.GeoTransform)[3] + (north * list(ds.GeoTransform)[-1] - list(ds.GeoTransform)[-1]/2)
         dtype = 'float32'
+        
     elif value.lower() == 'normalised':
         north += 1
         north /= north.max()
         dtype = 'float32'
+    
+    if flip==True: 
+        north = np.flip(north, axis=0)
 
     export(north, ds, filename=outFile, dtype=dtype)
 
@@ -179,19 +194,18 @@ def easting(referenceFile, outFile='pyrsgis_easting.tif', flip=False, value='num
     ds, band = read(referenceFile, bands=1)
     east = northEast(band, layer='east')
 
-    flip = False if value.lower() == 'coordinates' else True
-    
-    if flip==True:
-        east = np.flip(east, axis=1)
-        
     if value.lower() == 'coordinates':
+        flip = False
         east = list(ds.GeoTransform)[0] + (east * list(ds.GeoTransform)[1] - list(ds.GeoTransform)[1]/2)
         dtype = 'float32'
-        
-    if value.lower() == 'normalised':
+    
+    elif value.lower() == 'normalised':
         east += 1
         east /= east.max()
         dtype = 'float32'
+        
+    if flip==True:
+        east = np.flip(east, axis=1)        
 
     export(east, ds, filename=outFile, dtype=dtype)
     
@@ -232,6 +246,50 @@ def shift_file(file, x=0, y=0, outfile=None, shift_type='unit', dtype='uint16'):
     if outfile == None:
         outfile = '%s_shifted.tif' % (os.path.splitext(file)[0])
 
-    export(arr, ds, filename=outfile, dtype=dtype, bands='all')
+    export(array, ds, filename=outfile, dtype=dtype, bands='all')
 
+def clip(ds, array, x_min, x_max, y_min, y_max):
+    # if array is multiband, take the first band
+    temp_array = array[0, :, :] if len(array.shape) == 3 else array
+    
+    north, east = northEastCoordinates(ds, temp_array, layer='both')
+
+    # make values beyond the lat long zero
+    temp_array[north < y_min] = 0
+    temp_array[north > y_max] = 0
+    temp_array[east < x_min] = 0
+    temp_array[east > x_max] = 0
+
+    # get the bouding box and clip the array
+    non_zero_index = np.nonzero(temp_array)
+    row_min, row_max = non_zero_index[0].min(), non_zero_index[0].max()+1
+    col_min, col_max = non_zero_index[1].min(), non_zero_index[1].max()+1
+
+    # modify the metadata
+    north = north[row_min:row_max, col_min:col_max]
+    east = east[row_min:row_max, col_min:col_max]
+    print(north.shape, east.shape)
+    print(north.min(), east.max())
+
+    geo_transform = list(ds.GeoTransform)
+    geo_transform[3] = north.max() + (ds.GeoTransform[1] / 2)
+    geo_transform[0] = east.min() + (ds.GeoTransform[-1] / 2)
+    out_ds = ds
+    out_ds.GeoTransform = tuple(geo_transform)
+    out_ds.RasterYSize, out_ds.RasterXSize = north.shape
+
+    if len(array.shape) == 3:
+        return(out_ds, array[:, row_min:row_max, col_min:col_max])
+    else:
+        return(out_ds, array[row_min:row_max, col_min:col_max])
+
+def clip_file(file, x_min, x_max, y_min, y_max, outfile=None):
+    ds, array = read(file)
+
+    ds, array = clip(ds, array, x_min, x_max, y_min, y_max)
+    
+    if outfile == None:
+        outfile = '%s_clipped.tif' % (os.path.splitext(file)[0])
+    
+    export(array, ds, filename=outfile, bands='all')
 
