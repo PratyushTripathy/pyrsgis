@@ -21,9 +21,3 @@ python:
       - method: setuptools
         path: another/package
    system_packages: true
-
-build:
-  image: latest
-  apt_packages:
-    - libclang
-    - cmake
