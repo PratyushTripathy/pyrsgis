@@ -10,12 +10,11 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os, sys
+sys.path.insert(0, os.path.abspath('../'))
 autodoc_mock_imports = ['mock', 'sphinx_bootstrap_theme']
 
-import os, sys, mock
+import mock
 import sphinx_bootstrap_theme
 
 # -- Project information -----------------------------------------------------
@@ -41,7 +40,8 @@ sys.path.insert(0, os.path.abspath('../'))
 
 MOCK_MODULES = [
     'numpy',
-    'GDAL']
+    'GDAL',
+    'scikit-learn']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()

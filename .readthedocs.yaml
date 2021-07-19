@@ -1,0 +1,27 @@
+# specify the version of readthedocs
+version: 2
+
+# Build documentation in the docs/ directory with Sphinx
+sphinx:
+   builder: html
+   configuration: docs/conf.py
+
+# Optionally build your docs in additional formats such as PDF
+formats:
+   - all
+
+# Optionally set the version of Python and requirements required to build your docs
+python:
+   version: 3.7
+   install:
+   - requirements: requirements.txt
+   - method: pip
+   path: .
+   extra_requirements:
+      - docs
+
+build:
+  image: latest
+  apt_packages:
+    - libclang
+    - cmake
