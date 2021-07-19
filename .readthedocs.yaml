@@ -13,11 +13,14 @@ formats: all
 python:
    version: 3.7
    install:
-   - requirements: requirements.txt
-   - method: pip
-   path: .
-   extra_requirements:
-      - docs
+      - requirements: requirements.txt
+      - method: pip
+        path: .
+        extra_requirements:
+           - docs
+      - method: setuptools
+        path: another/package
+   system_packages: true
 
 build:
   image: latest
