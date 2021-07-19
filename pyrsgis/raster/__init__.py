@@ -248,6 +248,7 @@ def shift_file(file, x=0, y=0, outfile=None, shift_type='unit', dtype='uint16'):
 
     export(array, ds, filename=outfile, dtype=dtype, bands='all')
 
+# define a function to clip an array and update metadata using coordinates of bounding box    
 def clip(ds, array, x_min, x_max, y_min, y_max):
     # if array is multiband, take the first band
     temp_array = array[0, :, :] if len(array.shape) == 3 else array
@@ -283,6 +284,7 @@ def clip(ds, array, x_min, x_max, y_min, y_max):
     else:
         return(out_ds, array[row_min:row_max, col_min:col_max])
 
+# define a file to clip the file using coordinates of a bounding box
 def clip_file(file, x_min, x_max, y_min, y_max, outfile=None):
     ds, array = read(file)
 
@@ -293,3 +295,4 @@ def clip_file(file, x_min, x_max, y_min, y_max, outfile=None):
     
     export(array, ds, filename=outfile, bands='all')
 
+# define a function to trip GeoTIF file using (this function takes no data value as an input too)
