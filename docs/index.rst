@@ -10,8 +10,8 @@ when it comes to reading and exporting GeoTIFs. There are several
 other functions available in this package that ease raster pre-processing, 
 some focused on machine learning applications.
 
-This documentation was first created on 19 July 2021. Relevant contents
-will be added soon. Please check back in a couple of days.
+This documentation was first created on 19 July 2021. Please check back 
+in a couple of days.
 
 
 .. toctree::
