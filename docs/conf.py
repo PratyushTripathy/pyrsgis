@@ -11,21 +11,22 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os, sys
-sys.path.insert(0, os.path.abspath('../'))
 autodoc_mock_imports = ['mock', 'sphinx_bootstrap_theme']
 
 import mock
 import sphinx_bootstrap_theme
 
-# -- Project information -----------------------------------------------------
+sys.path.insert(0, os.path.abspath('../../'))
+import pyrsgis
 
+# -- Project information -----------------------------------------------------
 project = 'pyrsgis'
 copyright = '2021, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
 # The full version, including alpha/beta/rc tags
 try:
-    release = pyrsgis.__version__
+    version = pyrsgis.__version__
 except:
     with open('../pyrsgis/__init__.py') as f:
         for line in f:
@@ -36,7 +37,7 @@ except:
 
 
 # -- General configuration ---------------------------------------------------
-sys.path.insert(0, os.path.abspath('../'))
+#sys.path.insert(0, os.path.abspath('../'))
 
 MOCK_MODULES = [
     'numpy',
@@ -49,15 +50,15 @@ for mod_name in MOCK_MODULES:
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode'
+    "IPython.sphinxext.ipython_console_highlighting",
+    "matplotlib.sphinxext.plot_directive",
+    "numpydoc",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.doctest",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.linkcode",
+    "sphinx.ext.viewcode"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -93,5 +94,9 @@ html_title = "%s v%s Documentation" % ('pyrsgis', version)
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+#html_static_path = ['_static']
 htmlhelp_basename = 'pyrsgis' + 'doc'
+
+def linkcode_resolve(domain, info):
+    return None
+

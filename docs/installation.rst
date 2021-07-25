@@ -13,7 +13,7 @@ Installing using PyPi
 pyrsgis is available on the `Python Package Index`_ repository.
 It can be installed using pip from command line using the following command::
 
-  pip install pyrsgis
+	pip install pyrsgis
 
 
 If you want to install a specific version, you can check the `release history`_

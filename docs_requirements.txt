@@ -1,3 +1,10 @@
 numpy>=1.20.0
 scikit-learn>=0.22
 sphinx_bootstrap_theme
+sphinx==4.0.3
+sphinxcontrib.bibtex
+ipython
+numpydoc
+nbsphinx
+sphinx_copybutton
+myst-parser
