@@ -41,7 +41,8 @@ except:
 
 MOCK_MODULES = [
     'numpy',
-    'GDAL',
+    'gdal',
+    'osgeo',
     'scikit-learn']
 
 for mod_name in MOCK_MODULES:
