@@ -23,20 +23,14 @@ project = 'pyrsgis'
 copyright = '2021, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
-# The full version, including alpha/beta/rc tags
-try:
-    release = pyrsgis.__version__
-except:
-    with open('../pyrsgis/__init__.py') as f:
-        for line in f:
-            if line.find("__version__") >= 0:
-                version = line.split("=")[1].strip()
-                version = version.strip('"').strip("'")
-                continue
+# add version info
+sys.path.insert(0, os.path.abspath("../.."))
 
+import pyrsgis
+version = pyrsgis.__version__
 
 # -- General configuration ---------------------------------------------------
-sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 MOCK_MODULES = [
     'numpy',
@@ -68,6 +62,8 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = "sphinx"
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -75,23 +71,16 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme_options = {
-    'navbar_title': "pyrsgis",
-    'navbar_sidebarrel': False,
-    'navbar_class': "navbar navbar-inverse",
-    'navbar_fixed_top': "true",
-    'source_link_position': 'footer',
-    'bootstrap_version': "3",
-    'navbar_links': [
-        ("Installation", "installation")]
+    "github_url": "https://github.com/PratyushTripathy/pyrsgis"
     }
     
 
-html_theme = 'bootstrap'
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+html_theme = "pydata_sphinx_theme"
+#html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 html_title = "%s v%s Documentation" % ('pyrsgis', version)
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-htmlhelp_basename = 'pyrsgis' + 'doc'
+htmlhelp_basename = 'pyrsgisdoc'
