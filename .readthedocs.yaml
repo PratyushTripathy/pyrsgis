@@ -22,4 +22,6 @@ python:
 
 build:
    apt_packages:
-   - libgdal-dev
+   - libclang
+    - cmake
+    - libgdal-dev
