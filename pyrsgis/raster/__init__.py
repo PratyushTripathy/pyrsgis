@@ -54,6 +54,53 @@ def extractBands(ds, bands):
     return(array)
     
 def read(file, bands='all'):
+    """
+    Read raster file
+
+    The function read the raster and generates two object. The first one is a
+    datasource object and the second is a numpy array containing DN values of the
+    bands.
+
+    Parameters
+    ----------
+    file            : Path to the input file.
+    bands           : Bands to read.
+                      This can be either the band number or a list or tuple of band numbers or 'all'.
+
+    Attributes
+    ----------
+    RasterCount     : The total number of bands in the input file.
+    RasterXSize     : Height of the raster represented as the number of rows.
+    RasterYSize     : Width of the raster represented as the number of columns.
+    Projection      : The projection of the input file.
+    GeoTransform    : Geotransform tuple of the input file.
+                      The tuple can be converted to list and updated to change the cell size
+                      of the raster.
+    
+    Examples
+    --------
+    >>> from pyrsgis.raster import read
+    >>> input_file = r'E:/path_to_your_file/raster_file.tif'
+    >>> ds, data_arr = read(input_file)
+
+    The 'data_arr' is a numpy array that can be manipulated as any other numpy array.
+    The 'ds' object contains details about the raster file.
+
+    >>> print(ds.RasterXSize, ds.RasterYSize)
+
+    The output from the above line will be equal to the followng line:
+
+    >>> print(arr.shape)
+
+    Please note that if the input file is a multispectral raster, the 'arr.shape'
+    command will result a tuple of size three, where the number of bands will at
+    the first index. For multispectral input files, the 'arr.shape' will be equal
+    to the following line:
+
+    >>> print(ds.RasterCount, ds.RasterXSize, ds.RasterYSize)
+    
+    """
+    
     ds = gdal.Open(file)
     if type(bands) == type('all'):
         if bands.lower()=='all':
