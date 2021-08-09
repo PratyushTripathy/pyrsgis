@@ -9,7 +9,7 @@ try:
 except:
     from osgeo import gdal
 
-class createDS():
+class _create_ds():
 
     def __init__(self, ds):
         self.Projection = ds.GetProjection()
@@ -57,34 +57,46 @@ def read(file, bands='all'):
     """
     Read raster file
 
-    The function read the raster and generates two object. The first one is a
-    datasource object and the second is a numpy array containing DN values of the
+    The function reads the raster file and generates two object. The first one is a
+    datasource object and the second is a numpy array that contains cell values of the
     bands.
 
     Parameters
     ----------
-    file            : Path to the input file.
-    bands           : Bands to read.
-                      This can be either the band number or a list or tuple of band numbers or 'all'.
+    file            : datasource object
+                      Path to the input file.
+                      
+    bands           : integer, tuple, list or 'all'
+                      Bands to read. This can either be a specific band number you wish
+                      to read or a list or tuple of band numbers or 'all'.
 
     Attributes
     ----------
-    RasterCount     : The total number of bands in the input file.
-    RasterXSize     : Height of the raster represented as the number of rows.
-    RasterYSize     : Width of the raster represented as the number of columns.
-    Projection      : The projection of the input file.
-    GeoTransform    : Geotransform tuple of the input file.
-                      The tuple can be converted to list and updated to change the cell size
-                      of the raster.
+    RasterCount     : integer
+                      The total number of bands in the input file.
+                      
+    RasterXSize     : integer
+                      Height of the raster represented as the number of rows.
+                      
+    RasterYSize     : integer
+                      Width of the raster represented as the number of columns.
+                      
+    Projection      : projection object
+                      The projection of the input file.
+                      
+    GeoTransform    : geotransform object
+                      This is the Geotransform tuple of the input file. The tuple
+                      can be converted to list and updated to change various properties
+                      of the raster file.
     
     Examples
     --------
-    >>> from pyrsgis.raster import read
+    >>> from pyrsgis import raster
     >>> input_file = r'E:/path_to_your_file/raster_file.tif'
-    >>> ds, data_arr = read(input_file)
+    >>> ds, data_arr = raster.read(input_file)
 
-    The 'data_arr' is a numpy array that can be manipulated as any other numpy array.
-    The 'ds' object contains details about the raster file.
+    The 'data_arr' is a numpy array. The 'ds' is the datasource object that
+    contains details about the raster file.
 
     >>> print(ds.RasterXSize, ds.RasterYSize)
 
@@ -93,7 +105,7 @@ def read(file, bands='all'):
     >>> print(arr.shape)
 
     Please note that if the input file is a multispectral raster, the 'arr.shape'
-    command will result a tuple of size three, where the number of bands will at
+    command will result a tuple of size three, where the number of bands will be at
     the first index. For multispectral input files, the 'arr.shape' will be equal
     to the following line:
 
@@ -105,13 +117,13 @@ def read(file, bands='all'):
     if type(bands) == type('all'):
         if bands.lower()=='all':
             array = ds.ReadAsArray()
-            ds = createDS(ds)
+            ds = _create_ds(ds)
             return(ds, array)
     elif type(bands) == type(list()) or\
          type(bands) == type(tuple()) or\
          type(bands) == type(1):
         array = extractBands(ds, bands)
-        ds = createDS(ds)
+        ds = _create_ds(ds)
         return(ds, array)
     else:
         print("Inappropriate bands selection. Please use the following arguments:\n1) bands = 'all'\n2) bands = [2, 3, 4]\n3) bands = 2")
@@ -135,11 +147,80 @@ raster_dtype = {'byte': gdal.GDT_Byte,
 
 def export(band, ds, filename='pyrsgis_outFile.tif', dtype='default', bands=1, nodata=-9999, compress=None):
     """
-    > If dtype is default and matches with ds, use int16.
-    > If dtype is default and disagrees with ds, use ds datatype.
-    > If a dtype is specified, use that.
-    """
+    Export GeoTIF file
 
+    This function exports the GeoTIF file using a data source object
+    and an array containing cell values.
+
+    Parameters
+    ----------
+    band            : array
+                      A numpy array containing the cell values of
+                      to-be exported raster. This can either be a 2D
+                      or a 3D array. Please note that the channel
+                      index should be in the beginning.
+                      
+    ds              : datasource object
+                      The datasource object of a target reference raster.
+                      
+    filename        : string
+                      Output file name ending with '.tif'. This can include
+                      relative path or full path of the file.
+                      
+    dtype           : string
+                      The data type of the raster to be exported. It can take
+                      one of these values, 'byte', 'cfloat32', 'cfloat64',
+                      'cint16', 'cint32', 'float', 'float32', 'float64',
+                      'int', 'int16', 'int32', 'uint8', 'uint16', 'uint32'
+                      or 'default'. The 'default' type value will take the
+                      data type from the given datasource object. It is advised
+                      to use a lower depth data value, this helps in reducing the
+                      file size on the disk.
+                      
+    bands           : integer, list, tuple or 'all'
+                      The band(s) you want to export. Please note that the band
+                      number here is actual position on band instead of Python's default
+                      index number. That is, the first band should be referred as 1.
+                      The 'bands' parameter defaults to 1 and should only be tweaked when
+                      the data array to be exported is a 3D array. If not specified, only the
+                      first band of the 3D array will be exported.
+                      
+    nodata          : signed integer
+                      The value that you want to tret as NULL or NoData in you output raster.
+                      
+    compress        : string
+                      Compression type of your output raster. Options are 'LZW', 'DEFLATE'
+                      and other methods that GDAL offers. Compressing the data can save a lot
+                      of disk space without losing data. Some methods, for instance 'LZW'
+                      can reduce the size of the raster from more than a GB to less than 20 MB.
+   
+    Examples
+    --------
+    >>> from pyrsgis import raster
+    >>> input_file = r'E:/path_to_your_file/landsat8_multispectral.tif'
+    >>> ds, data_arr = raster.read(input_file)
+    >>> red_arr = data_arr[3, :, :]
+    >>> nir_arr = data_arr[4, :, :]
+    >>> ndvi_arr = (nir_arr - red_arr) / (nir_arr + red_arr)
+
+    Or directly in one go:
+
+    >>> ndvi_arr = (data_arr[4, :, :] - data_arr[3, :, :]) / (data_arr[4, :, :] + data_arr[3, :, :])
+
+    And then export:
+
+    >>> output_file = r'E:/path_to_your_file/landsat8_ndvi.tif'
+    >>> raster.export(ndvi_arr, ds, output_file, dtype='float32')
+
+    Note that the 'dtype' parameter here is explicitly defined as 'float32'
+    since NDVI is a continuous data.
+    
+    """
+        
+    #If dtype is default and matches with ds, use int16.
+    #If dtype is default and disagrees with ds, use ds datatype.
+    #If a dtype is specified, use that.
+    
     if (dtype == 'default') and (ds.DataType == raster_dtype['int']):
         dtype = 'int'
     elif (dtype == 'default') and (ds.DataType != raster_dtype['int']):
