@@ -12,7 +12,7 @@ import matplotlib.cm as cm
 import numpy as np
 import warnings, shutil
 import tarfile, tempfile
-from ..raster import read, export, createDS
+from ..raster import read, export, _create_ds
 
 try:
     from matplotlib_scalebar.scalebar import ScaleBar
@@ -109,7 +109,7 @@ class readtar():
                 self.projection = self.ds.GetProjection()
                 self.geotransform = self.ds.GetGeoTransform()
                 self.initiated = True
-            self.ds = createDS(self.ds)
+            self.ds = _create_ds(self.ds)
             # Goes back to the old directory and deletes the temporary directory
             os.chdir(self.oldDir)
             self.clearMemory()
