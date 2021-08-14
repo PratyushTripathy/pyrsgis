@@ -17,8 +17,9 @@ Reading and exporting GeoTIFFs
     pyrsgis.raster.read
     pyrsgis.raster.export
 
-Changing shape of GeoTIFF array for statistical analysis
---------------------------------------------------------
+
+Reshaping GeoTIFF array for statistical analysis
+------------------------------------------------
 
 .. autosummary::
    :toctree: generated/
