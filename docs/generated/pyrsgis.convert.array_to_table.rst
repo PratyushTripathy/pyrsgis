@@ -1,5 +1,5 @@
-﻿pyrsgis.convert.array_to_table
-===================
+﻿pyrsgis.convert.array\_to\_table
+================================
 
 .. currentmodule:: pyrsgis.convert
 
