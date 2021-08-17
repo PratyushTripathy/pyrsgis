@@ -98,4 +98,7 @@ html_title = "%s v%s Documentation" % ('pyrsgis', version)
 #html_static_path = ['_static']
 htmlhelp_basename = 'pyrsgisdoc'
 
+# add this dummy function
+def linkcode_resolve(url):
+    pass
 
