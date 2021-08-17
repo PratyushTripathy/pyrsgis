@@ -99,6 +99,6 @@ html_title = "%s v%s Documentation" % ('pyrsgis', version)
 htmlhelp_basename = 'pyrsgisdoc'
 
 # add this dummy function
-def linkcode_resolve(url):
-    pass
+def linkcode_resolve(domain, info):
+    return None
 
