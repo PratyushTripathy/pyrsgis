@@ -2,7 +2,6 @@
 
 import os, glob
 import numpy as np
-import pandas as pd
 import csv
 from ..raster import read
 from ..raster import export
@@ -120,7 +119,73 @@ def table_to_array(table, n_rows=None, n_cols=None):
     return out_arr
 
 
-def raster_to_csv(path, filename='pyrsgis_rastertocsv.csv', negative=True, badrows=True, remove=[]):
+def raster_to_csv(path, filename='pyrsgis_rastertocsv.csv', negative=True, remove=[], badrows=True):
+    """
+    Convert raster to a tabular CSV file
+
+    This function converts a single or multiband raster or rasters present in a
+    given directory to a CSV file. Each row in the output CSV file represents a
+    cell and columns represent band(s) of the input raster(s).
+
+    Parameters
+    ----------
+    path       : string
+                 Path to a file or a directory containing raster file(s).
+                 
+    filename   : string
+                 Output CSV file name, with or without path.
+                 
+    negative   : boolean
+                 Whether to retain negative values or not. If False, all negative
+                 values will be forced to zero in the output CSV. This maybe useful in
+                 some cases as NoData cells in raster files are often negative.
+
+    remove     : list
+                 A list of values that you want to remove from the exported table. If a list
+                 is passed, all the values of the list will be converted to zero in the raster
+                 before transforming to table. Please note that in the backend, this step
+                 happens before bad rows removal.
+
+    badrows    : True
+                 Whether to retain rows in the CSV where all cells have zero value.
+                 This can be helpful since raster layers masked using a non-rectangular
+                 polygon may have unnecessary NoData cells. In such cases, if all the bands
+                 have a cell value of zero and are not relevant, this parameter can help in
+                 reducing the size of the data. Please note that cells converted to zero by
+                 passing the 'negative' and 'remove' arguments will also be considered as bad cells.
+
+    Examples
+    --------
+    >>> from pyrsgis import convert
+
+    If you want to convert a single raster file (single or multiple bands):
+    
+    >>> input_file = r'E:/path_to_your_file/raster_file.tif'
+    >>> output_file = r'E:/path_to_your_file/tabular_file.csv'
+    >>> convert.raster_to_csv(input_file, filename=output_file)
+
+    If you want to convert all files in a directory, please ensure that all
+    rasters in the directory have the same extent, cell size and geometry.
+    The files in the directory can be a mix of single and multiband rasters.
+
+    >>> input_dir = r'E:/path_to_your_file/'
+    >>> output_file = r'E:/path_to_your_file/tabular_file.csv'
+    >>> convert.raster_to_csv(input_dir, filename=output_file)
+
+    If you want to remove negative values, simply pass the 'negative' argument to False:
+
+    >>> convert.raster_to_csv(input_dir, filename=output_file, negative=False)
+
+    If you want to remove specific values, use this:
+
+    >>> convert.raster_to_csv(input_dir, filename=output_file, remove=[10, 54, 127])
+
+    If you want to remove bad rows, use the following line:
+
+    >>> convert.raster_to_csv(input_dir, filename=output_file, badrows=False)
+
+    """
+    
     data_df = pd.DataFrame()
     names = []
 
@@ -166,8 +231,47 @@ def raster_to_csv(path, filename='pyrsgis_rastertocsv.csv', negative=True, badro
     # export the file
     data_df.to_csv(filename, index=False)
 
-def csv_to_raster(csvfile, ref_raster, filename=None,
-                  dtype='int', compress='default', nodata=-9999):
+
+def csv_to_raster(csvfile, ref_raster, cols=[], stacked=True, filename=None,
+                  dtype='default', compress=None, nodata=-9999):
+    """
+    Convert a CSV file to raster
+
+    Parameters
+    ----------
+    csvfile       : string
+                    CSV file name. Please provide full path if file is not located
+                    in the working directory.
+
+    ref_raster    : string
+                    A reference raster file for target cell size, extent, projection, etc.
+
+    cols          : list
+                    The list of column names of the CSV files that should be exported. Passing
+                    a blank list will export all the columns.
+
+    stacked       : boolean
+                    Whether to stack all bands in one file or export them as separate files.
+
+    filename      : string
+                    The name of the output GeoTIFF file. Please note that if the 'stacked'
+                    argument is set to negative, the column name will be added towards the
+                    end of the output file name.
+
+    dtype         : string
+                    The data type of the output raster. This is same as the options in the
+                    pyrsgis.raster.export module. Options are: 'byte', 'cfloat32',
+                    'cfloat64', 'cint16', 'cint32', 'float', 'float32', 'float64', 'int',
+                    'int16', 'int32', 'uint8', 'uint16', 'uint32'.
+
+    compress      : string
+                    Compression type of the raster. This is same as the pyrsgis.raster.export
+                    function. Options are 'LZW', 'DEFLATE' and other options that GDAL offers.
+
+    nodata        : signed number
+                    Value to treat as NoData in the out out raster.
+    
+    """
 
     if filename == None:
         filename = csvfile.replace('.csv', '.tif')
@@ -184,6 +288,7 @@ def csv_to_raster(csvfile, ref_raster, filename=None,
     
     export(data_arr, ds, filename, dtype=dtype, compress=compress, nodata=nodata)
 
+"""
 def pandas_to_raster(data_df, x_col, y_col, ref_raster, filename='pyrsgis_pandastoraster.tif',
                      columns=None, x_range=None, y_range=None, dtype='int', compress='default',
                      nodata=-9999):
@@ -228,4 +333,4 @@ def pandas_to_raster(data_df, x_col, y_col, ref_raster, filename='pyrsgis_pandas
     # export the raster
     raster.export(data_arr, ds, filename, dtype=dtype, compress=compress, nodata=nodata)
         
-    
+"""

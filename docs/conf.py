@@ -83,7 +83,8 @@ html_theme_options = {
     'source_link_position': 'footer',
     'bootstrap_version': "3",
     'navbar_links': [
-        ("Installation", "installation")]
+        ("Installation", "installation"),
+        ("API", "api")]
     }
     
 
@@ -95,8 +96,6 @@ html_title = "%s v%s Documentation" % ('pyrsgis', version)
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 #html_static_path = ['_static']
-htmlhelp_basename = 'pyrsgis' + 'doc'
+htmlhelp_basename = 'pyrsgisdoc'
 
-def linkcode_resolve(domain, info):
-    return None
 

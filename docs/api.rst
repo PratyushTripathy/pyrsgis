@@ -26,3 +26,5 @@ Reshaping GeoTIFF array for statistical analysis
 
     pyrsgis.convert.array_to_table
     pyrsgis.convert.table_to_array
+    pyrsgis.convert.raster_to_csv
+    pyrsgis.convert.csv_to_raster
