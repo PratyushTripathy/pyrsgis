@@ -9,15 +9,35 @@ pyrsgis API reference
 ======================
 
 Reading and exporting GeoTIFFs
-----------------------------------
+------------------------------
 
 .. autosummary::
    :toctree: generated/
 
     pyrsgis.raster.read
     pyrsgis.raster.export
+	
+Clipping a raster
+-----------------
 
+.. autosummary::
+   :toctree: generated/
 
+    pyrsgis.raster.clip
+    pyrsgis.raster.clip_file
+    pyrsgis.raster.trim
+    pyrsgis.raster.trim_array
+    pyrsgis.raster.trim_file
+	
+Shifting a raster
+-----------------
+
+.. autosummary::
+   :toctree: generated/
+
+    pyrsgis.raster.shift
+    pyrsgis.raster.shift_file
+	
 Reshaping GeoTIFF array for statistical analysis
 ------------------------------------------------
 
@@ -28,3 +48,15 @@ Reshaping GeoTIFF array for statistical analysis
     pyrsgis.convert.table_to_array
     pyrsgis.convert.raster_to_csv
     pyrsgis.convert.csv_to_raster
+	
+Generating northing and easting raster
+--------------------------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    pyrsgis.raster.north_east
+    pyrsgis.raster.north_east_coordinates
+    pyrsgis.raster.northing
+    pyrsgis.raster.easting
+

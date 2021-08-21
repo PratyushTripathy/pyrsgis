@@ -9,6 +9,10 @@ from .. import doc_address
 
 
 def changeDimension():
+    """
+    The pytrsgis.convert.changeDimension() module has moved to
+    pyrsgis.convert.array_to_table. Please check the documentation.
+    """
     print('The "changeDimension()" function has moved to "array_to_table()". ' +
           'Please check the pyrsgis documentation at %s for more details.' % (doc_address))
 
