@@ -11,9 +11,6 @@ Feedback and doubts from users are most welcome. Since this is an open-source vo
 
 pyrsgis is available on both, PyPI and Anaconda. Please check the [installation page](https://pyrsgis.readthedocs.io/en/master/installation.html) for details.
 
-To install using pip, see the PyPI page - [link](https://pypi.org/project/pyrsgis/) <br/>
-To install using conda, see the Anaconda page - [link](https://anaconda.org/pratyusht/pyrsgis) <br/>
-
 **Recommended citation:**<br/>
 Tripathy, P. pyrsgis: A Python package for remote sensing and GIS. V0.4. Available at https://pypi.org/project/pyrsgis/.
 
