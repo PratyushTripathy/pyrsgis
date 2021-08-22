@@ -8,7 +8,7 @@ packages=setuptools.find_packages()
 
 setuptools.setup(
     name="pyrsgis",
-    version="0.4.1rc1",
+    version="0.4.1rc2",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
     description="A package to read, process and export GeoTIFFs.",
