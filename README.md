@@ -12,7 +12,7 @@ Feedback and doubts from users are most welcome. Since this is an open-source vo
 pyrsgis is available on both, PyPI and Anaconda. Please check the [installation page](https://pyrsgis.readthedocs.io/en/master/installation.html) for details.
 
 **Recommended citation:**<br/>
-Tripathy, P. pyrsgis: A Python package for remote sensing and GIS data processing. V0.4. Available at https://pypi.org/project/pyrsgis/.
+Tripathy, P. pyrsgis: A Python package for remote sensing and GIS data processing. V0.4. Available at https://github.com/PratyushTripathy/pyrsgis.
 
 # Sample code (click to expand)
 <details><summary><b>1. Reading .tif extension file</b></summary>
