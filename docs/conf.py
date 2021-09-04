@@ -17,7 +17,6 @@ import mock
 import sphinx_bootstrap_theme
 
 sys.path.insert(0, os.path.abspath('../../'))
-import pyrsgis
 
 # -- Project information -----------------------------------------------------
 project = 'pyrsgis'
@@ -26,6 +25,7 @@ author = 'Pratyush Tripathy'
 
 # The full version, including alpha/beta/rc tags
 try:
+    import pyrsgis
     version = pyrsgis.__version__
 except:
     with open('../pyrsgis/__init__.py') as f:
@@ -42,7 +42,9 @@ except:
 MOCK_MODULES = [
     'numpy',
     'gdal',
-    'scikit-learn']
+    'scikit-learn',
+    'scikit-image',
+    'pandas']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()

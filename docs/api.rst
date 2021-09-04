@@ -49,6 +49,15 @@ Reshaping GeoTIFF array for statistical analysis
     pyrsgis.convert.raster_to_csv
     pyrsgis.convert.csv_to_raster
 	
+Creating image chips for deep learning
+--------------------------------------
+
+.. autosummary::
+   :toctree: generated/
+
+    pyrsgis.ml.array_to_chips
+    pyrsgis.ml.raster_to_chips
+	
 Generating northing and easting raster
 --------------------------------------
 

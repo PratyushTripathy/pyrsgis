@@ -2,20 +2,33 @@
 
 import os, glob
 import numpy as np
+import pandas as pd
 import csv
 from ..raster import read
 from ..raster import export
 from .. import doc_address
 
 
-def changeDimension():
+def changeDimension(arr):
     """
-    The pytrsgis.convert.changeDimension() module has moved to
+    The pyrsgis.convert.changeDimension() module has moved to
     pyrsgis.convert.array_to_table. Please check the documentation.
     """
-    print('The "changeDimension()" function has moved to "array_to_table()". ' +
-          'Please check the pyrsgis documentation at %s for more details.' % (doc_address))
+    print('The "changeDimension()" function has moved to "array_to_table()" and will be deprecated in future versions. ' +
+      'Please check the pyrsgis documentation at %s for more details.' % (doc_address))
 
+    if len(arr.shape) == 3:
+        layer, row, col = arr.shape
+        temparr = np.random.randint(1, size=(row*col, layer))
+        for n in range(0, layer):
+            temparr[:,n] = np.reshape(arr[n,:,:], (row*col,))
+        return(temparr)
+    if len(arr.shape) == 2:
+        row, col = arr.shape
+        temparr = np.reshape(arr, (row*col,))
+        return(temparr)
+    else:
+        print("Inconsistent shape of input array.\n2-d or 3-d array expected.")
 
 def array_to_table(arr):
     """
@@ -92,20 +105,20 @@ def table_to_array(table, n_rows=None, n_cols=None):
     ...some analysis/processing that you may want to do and generate more columns,
     say two more columns. Then:
 
-    >>> new_data_arr = convert.table_to_array(data_table, n_rows=800, n_cols=400)
+    >>> new_data_arr = convert.table_to_array(data_table, n_rows=ds.RasterYSize, n_cols=ds.RasterXSize)
     >>> print('Shape of the array with newly added bands:', new_data_arr.shape)
     Shape of the array with newly added bands: (8, 800, 400)
 
     If you want to reshape only the new band(s), then:
 
-    >>> new_data_arr = convert.table_to_array(data_table[:, -2:], n_rows=800, n_cols=400)
+    >>> new_data_arr = convert.table_to_array(data_table[:, -2:], n_rows=ds.RasterYSize, n_cols=ds.RasterXSize)
     >>> print('Shape of the array with newly added bands:', new_data_arr.shape)
     Shape of the array with newly added bands: (2, 800, 400)
             
     """
     
     if len(table.shape) > 2:
-        print('A three dimensional array was provided, which is currently not supported. ' + 
+        print('A three dimensional array was provided. Please provied a 1D or 2D array. ' + 
               'Please check the pyrsgis documentation at %s' % (doc_address))
         return None
     
@@ -209,7 +222,7 @@ def raster_to_csv(path, filename='pyrsgis_rastertocsv.csv', negative=True, remov
         os.chdir(path)
 
         for file in glob.glob("*.tif"):
-            print('Reading file %s..' % (file))
+            print('Converting %s..' % (file))
             header = os.path.basename(file)
             
             ds, arr = read(file)
@@ -274,7 +287,36 @@ def csv_to_raster(csvfile, ref_raster, cols=[], stacked=True, filename=None,
 
     nodata        : signed number
                     Value to treat as NoData in the out out raster.
+
+    Examples
+    --------
+    Let's assume that you convert a GeoTIFF file to CSV and perform some statistical analysis.
     
+    >>> from pyrsgis import convert
+    >>> input_file = r'E:/path_to_your_file/raster_file.tif'
+    >>> out_csvfile = input_file.replace('.tif', '.csv')
+    >>> convert.raster_to_csv(input_file, filename=out_csvfile, negative=False)
+
+    ...create new column(s) (eg. clustering classes, predictions from a stats/ML model). And then
+    convert the CSV to TIF file.
+
+    >>> new_csvfile = r'E:/path_to_your_file/predicted_file.tif'
+    >>> out_tiffile = new_csvfile.replace('.csv', '.tif')
+    >>> convert.csv_to_raster(new_csvfile, ref_raster=input_file, filename=out_tiffile, compress='DEFLATE')
+
+    This will export a GeoTIFF file. If there are multiple columns in the CSV file, the arrays
+    will be stacked and exported as multispectral file. One can explicitly selct the columns to
+    be exported but you should know the name of the columns beforehand.
+
+    >>> convert.csv_to_raster(new_csvfile, ref_raster=input_file, filename=out_tiffile,
+                              cols=['Blue', 'Green', 'KMeans', 'RF_Class'], compress='DEFLATE')
+
+    If you want to export each of the columns as separate bands, set the ``stacked`` parameter to
+    ``False``.
+
+    >>> convert.csv_to_raster(new_csvfile, ref_raster=input_file, filename=out_tiffile,
+                              cols=['Blue', 'Green', 'KMeans', 'RF_Class'], stacked=False, compress='DEFLATE')
+
     """
 
     if filename == None:
@@ -282,15 +324,29 @@ def csv_to_raster(csvfile, ref_raster, cols=[], stacked=True, filename=None,
 
     ds, _ = read(ref_raster, bands=1)
     _ = None
-    rows, cols = ds.RasterXSize, ds.RasterYSize
+    x_size, y_size = ds.RasterYSize, ds.RasterXSize
 
     data_df = pd.read_csv(csvfile)
-    data_arr = data_df.to_numpy()
+    n_cols = data_df.columns
+
+    if len(cols) == 0:
+        cols = data_df.columns
+
+    out_arr = np.zeros((len(cols), x_size, y_size))
+    for n, col in enumerate(cols):
+        out_arr[n, :, :] = np.reshape(data_df[col].values, (x_size, y_size))
     data_df = None
+
+    # add extension in the filename if missing
+    if filename.endswith('.tif') == False:
+        filename = filename + '.tif'
         
-    data_arr = np.reshape(data_arr, (rows, cols))
-    
-    export(data_arr, ds, filename, dtype=dtype, compress=compress, nodata=nodata)
+    if stacked == True:
+        export(out_arr, ds, filename, dtype=dtype, compress=compress, nodata=nodata)
+    else:
+        for n, col in enumerate(cols):
+            export(out_arr[n,:,:], ds, filename.replace('.tif', '_%s.tif'%(col)),
+                   dtype=dtype, compress=compress, nodata=nodata)
 
 """
 def pandas_to_raster(data_df, x_col, y_col, ref_raster, filename='pyrsgis_pandastoraster.tif',

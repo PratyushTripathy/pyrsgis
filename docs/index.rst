@@ -8,14 +8,15 @@ pyrsgis enables the user to read, process and export GeoTIFFs.
 The module is built on the GDAL library, but is much more convenient 
 when it comes to reading and exporting GeoTIFs. There are several 
 other functions available in this package that ease raster pre-processing, 
-some focused on machine learning applications.
+some focused on machine learning tasks.
 
-This documentation was first created on 19 July 2021 and currently is
-under development. Please check back later.
+Feedback and bug reports are most welcome. Since this is an open-source 
+project, I always look forward to contributors.
 
-A more comprehensive usage guide can be found on the `GitHub`_ page of
-the project.
+GitHub repository : https://github.com/PratyushTripathy/pyrsgis
 
+pyrsgis is available on both, PyPI and Anaconda. Please submit your query as
+a pull request on the GitHub repo. You can contact me at: pratkrt@gmail.com
 
 .. toctree::
    :maxdepth: 2
@@ -23,5 +24,3 @@ the project.
 
    Installation <installation>
    API <api>
-
-.. _GitHub: https://github.com/PratyushTripathy/pyrsgis
