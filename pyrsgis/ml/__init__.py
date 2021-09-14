@@ -9,6 +9,12 @@ from sklearn.feature_extraction import image
 # define a function to create image chips from single band array
 def array2d_to_chips(data_arr, y_size=5, x_size=5):
     """
+    
+
+
+
+
+    
     Image chips from 2D array
 
     This function generates images chips from single band arrays. The image chips can
