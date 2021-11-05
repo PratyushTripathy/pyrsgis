@@ -1,5 +1,5 @@
-﻿pyrsgis.ml.array_to_chips
-=========================
+﻿pyrsgis.ml.array\_to\_chips
+===========================
 
 .. currentmodule:: pyrsgis.ml
 

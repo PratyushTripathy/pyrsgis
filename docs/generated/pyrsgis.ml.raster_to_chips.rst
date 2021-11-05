@@ -1,5 +1,5 @@
-﻿pyrsgis.ml.raster_to_chips
-==========================
+﻿pyrsgis.ml.raster\_to\_chips
+============================
 
 .. currentmodule:: pyrsgis.ml
 

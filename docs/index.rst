@@ -16,7 +16,7 @@ project, I always look forward to contributors.
 GitHub repository : https://github.com/PratyushTripathy/pyrsgis
 
 pyrsgis is available on both, PyPI and Anaconda. Please submit your query as
-a pull request on the GitHub repo. You can contact me at: pratkrt@gmail.com
+a pull request on the GitHub repo. For more information, write to: pratkrt@gmail.com
 
 .. toctree::
    :maxdepth: 2

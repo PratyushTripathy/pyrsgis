@@ -56,6 +56,7 @@ Creating image chips for deep learning
    :toctree: generated/
 
     pyrsgis.ml.array_to_chips
+    pyrsgis.ml.array2d_to_chips
     pyrsgis.ml.raster_to_chips
 	
 Generating northing and easting raster
