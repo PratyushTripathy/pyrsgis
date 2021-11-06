@@ -2,6 +2,7 @@ numpy>=1.20.0
 scikit-learn>=0.22
 gdal==2.2.3
 pandas>=1.2.5
+setuptools==57.5.0
 sphinx_bootstrap_theme
 sphinx==4.0.3
 sphinxcontrib.bibtex
