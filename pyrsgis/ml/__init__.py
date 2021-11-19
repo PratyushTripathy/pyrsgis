@@ -183,7 +183,7 @@ def raster_to_chips(file, y_size=5, x_size=5):
     --------
     >>> from pyrsgis import raster, ml
     >>> infile_2d = r'E:/path_to_your_file/your_2d_file.tif'
-    >>> image_chips = ml.raster_to_chips(data_arr, y_size=7, x_size=7)
+    >>> image_chips = ml.raster_to_chips(infile_2d, y_size=7, x_size=7)
     >>> print('Shape of single band generated image chips:', image_chips.shape)
     Shape of single bandgenerated image chips: (4198376, 7, 7)
 
