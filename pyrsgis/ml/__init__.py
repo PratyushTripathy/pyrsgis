@@ -131,7 +131,7 @@ def imageChipsFromArray(data_array, x_size=5, y_size=5):
 
     # if array is a multi band image  
     elif len(data_array.shape) > 2:
-        data_array = copy.copy(data_array)
+        data_array = deepcopy(data_array)
         data_array = np.rollaxis(data_array, 0, 3)
         
         for band in range(data_array.shape[2]):
