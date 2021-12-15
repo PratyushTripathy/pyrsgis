@@ -22,6 +22,7 @@ formats: all
 python:
    version: 3.7
    install:
+      - requirements: docs_requirements_setuptools.txt
       - requirements: docs_requirements.txt
       - method: pip
         path: .
