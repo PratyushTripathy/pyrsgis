@@ -1,5 +1,6 @@
 #pyrsgis/ml
 
+import copy
 from copy import deepcopy
 import numpy as np
 from ..raster import read
