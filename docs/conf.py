@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 project = 'pyrsgis'
-copyright = '2021, Pratyush Tripathy'
+copyright = '2022, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
 # The full version, including alpha/beta/rc tags
