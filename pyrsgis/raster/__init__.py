@@ -1,6 +1,6 @@
 #pyrsgis/raster
 
-import os
+import os, math
 import numpy as np
 from .. import doc_address
 from copy import deepcopy
@@ -1151,4 +1151,143 @@ def trim_file(filename, remove, outfile):
     
     # export the outfile
     export(new_arr, new_ds, outfile)
+
+# define a function to update datasource object
+def update_ds(ds_object, new_lon, new_lat):
+    """
+    This function updates the latitude and longitude values in the datasource object.
+
+    Parameters
+    ----------
+    ds_object           : datasource object
+                          The input datasource object to use as template. This is typically generated using the raster.read() function.
+
+    new_lon             : int or float
+                          The new longitude value to feed in the datasource object.
+
+    new_lat             : int or float
+                          The new latitude value to feed in the datasource object.
+
+    Returns
+    -------
+    new_ds              : datasource object
+                          The updated datasource object.
+
+    Examples
+    --------
+    >>> from pyrsgis import raster
+    >>> infile = r'E:/path_to_your_file/your_file.tif'
+    >>> ds, arr = raster.read(infile)
+    >>> print('Geo transform in original DS:', ds.GeoTransform)
+    Geo transform in original DS: (250087.5326, 0.8, 0.0, 2820013.2987, 0.0, -0.8)
+
+    >>> new_ds = raster.update_ds(ds, new_lon=250200, new_lat=2820400)
+    >>> print('Geo transform in new DS:', new_ds.GeoTransform)
+    Geo transform in new DS: (250200, 0.8, 0.0, 2820400, 0.0, -0.8)
+
+    """
+
+    temp_geoTransform = list(ds_object.GeoTransform)
+    temp_geoTransform[0] = new_lon
+    temp_geoTransform[3] = new_lat
+    new_ds = deepcopy(ds_object)
+    new_ds.GeoTransform = tuple(temp_geoTransform)
+
+    return new_ds
+
+def fragment_raster(filename, nrows, ncols, outdir=None, prefix=None):
+    """
+    This function clips the raster into smaller rasters using a nxm grid.
+
+    Parameters
+    ----------
+    filename        : string
+                      Path to the input raster file.
+
+    nrows           : integer
+                      No. of rows of the expected grid.
+
+    ncols           : string
+                      No. of cols of the expected grid.
+
+    outdir          : string (optional)
+                      Output directory where files will be stored. If not specified, the clipped rasters will be exported in the same directory as the input file. Note that the output directory should exist, this function will not generate the output directory.
+
+    prefix          : string (optional)
+                      If specified, the prefix will be used for clipped rasters files. Otherwise, the input file name will be used.
+
+    Returns
+    -------
+    exported_files_list   : list
+                            A list containing path to all the exported files.
+
+    Examples
+    --------
+    >>> from pyrsgis import raster
+    >>> infile = r'E:/path_to_your_file/your_file.tif'
+    >>> outdir = r'E:/path_to_output_directory/clipped_images'
+    >>> exported_files = raster.fragment_raster(infile, nrows=3, ncols=5, outdir=outdir, prefix='ClippedSample')
+    >>> print('Following files were exported:\n', '\n'.join(exported_files))
+    Following files were exported:
+    E:/path_to_output_directory/clipped_images/ClippedSample_1_1.tif
+    E:/path_to_output_directory/clipped_images/ClippedSample_2_1.tif
+    E:/path_to_output_directory/clipped_images/ClippedSample_3_1.tif
+    .
+    .
+    E:/path_to_output_directory/clipped_images/ClippedSample_3_3.tif
+    E:/path_to_output_directory/clipped_images/ClippedSample_4_3.tif
+    E:/path_to_output_directory/clipped_images/ClippedSample_5_3.tif
+
+    """
+
+    # resolve the output file name
+    if prefix == None:
+        outfile = filename
+    else:
+        outfile = os.path.join(os.path.split(filename)[0], f'{prefix}.tif')
+
+    if outdir != None:
+        outfile = os.path.join(outdir, os.path.split(outfile)[-1])
+
+    # read the raster file
+    ds, arr = read(filename)
+
+    # fragment the main data array
+    arr_fragmented = [np.split(item, ncols, axis=-1) for item in np.array_split(arr, nrows, axis=-2)]
+    arr_fragmented = [col_item for row_item in arr_fragmented for col_item in row_item]
+
+    # generate latitude and longitude arrays
+    latitude_arr, longitude_arr = north_east_coordinates(ds, arr, layer='both')
+    arr = None # arr variable no longer required
+
+    # transform the values from cell center to cell upper left corner
+    latitude_arr -= list(ds.GeoTransform)[-1] / 2
+    longitude_arr -= list(ds.GeoTransform)[1] / 2
+
+    ## since north and east arrays have redundant cols and rows respectively, slice them
+    latitude_arr = latitude_arr[:, 0]
+    longitude_arr = longitude_arr[0, :]
+
+    #_fragment latitude and longitude arrays
+    latitude_arr_fragmented = [item[0] for item in np.array_split(latitude_arr, nrows)]
+    longitude_arr_fragmented = [item[0] for item in np.array_split(longitude_arr, ncols)]
+
+    # combine latitudes and longitudes to easily loop over them later
+    coordinates_fragmented = [(lat, lon) for lat in latitude_arr_fragmented for lon in longitude_arr_fragmented]
+
+    # create x and 7 numbers to use as suffix during file export
+    x_list = np.arange(1, ncols + 1)
+    y_list = np.arange(1, nrows + 1)
+    xy_list = [(y, x) for y in y_list for x in x_list]
+
+    # loop through the fragmented arrays and export the raster files
+    exported_files_list = []
+    for xy, location, data_arr in zip(xy_list, coordinates_fragmented, arr_fragmented):
+        new_ds = update_ds(ds, location[1], location[0])
+
+        export_file = outfile.replace('.tif', f'_{xy[1]}_{xy[0]}.tif')
+        export(data_arr, new_ds,filename = export_file)
+        exported_files_list.append(export_file)
+
+    return exported_files_list
 
