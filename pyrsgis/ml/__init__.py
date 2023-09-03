@@ -1,6 +1,6 @@
 #pyrsgis/ml
-
-from copy import deepcopy
+import copy 
+from copy import deepcopy 	
 import numpy as np
 from ..raster import read
 from sklearn.feature_extraction import image
