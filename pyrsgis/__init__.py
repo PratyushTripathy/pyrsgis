@@ -5,8 +5,8 @@ Compatible with Python versions 3+
 """
 
 name = 'pyrsgis'
-__version__ = "0.5.1"
+__version__ = "2025.4.2"
 doc_address = r'https://pyrsgis.readthedocs.io/en/master/'
 
 #Importing all functions from beta
-from .beta import *
+#from .beta import *
