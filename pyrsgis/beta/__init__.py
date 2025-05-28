@@ -18,7 +18,16 @@ try:
     from matplotlib_scalebar.scalebar import ScaleBar
 except:
     pass
-        
+
+import warnings
+
+warnings.warn(
+    "The 'pyrsgis.beta' module is deprecated and will be removed in a future release.",
+    DeprecationWarning,
+    stacklevel=2
+)
+
+
 #Disabling annoying warnings
 warnings.filterwarnings("ignore")
 
