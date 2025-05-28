@@ -4,8 +4,9 @@ import os, math
 import numpy as np
 from .. import doc_address
 from copy import deepcopy
+import utils
 
-# add exception for deprecated version of gdal
+# safely import gdal (support old version)
 try:
     import gdal
 except:
@@ -21,6 +22,10 @@ class _create_ds():
         self.RasterYSize = ds.RasterYSize
         self.DataType = ds.GetRasterBand(1).DataType
         self.update_bbox()
+        self.dtypes = [
+            utils.datatype_dict_num_str[ds.GetRasterBand(i + 1).DataType]
+            for i in range(ds.RasterCount)
+        ]
 
     def GetProjection(self):
         return(self.Projection)
