@@ -1,0 +1,7 @@
+word.txt
+*word.txt
+.idea/
+*.xml
+*.pyc
+.DS_Store
+.iml
