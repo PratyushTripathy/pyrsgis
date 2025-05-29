@@ -4,7 +4,7 @@ import os, math
 import numpy as np
 from .. import doc_address
 from copy import deepcopy
-import utils
+from .. import utils
 
 # safely import gdal (support old version)
 try:
