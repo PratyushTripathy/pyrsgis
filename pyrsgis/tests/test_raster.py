@@ -20,7 +20,6 @@ Notes on how to test:
 
 #import pytest
 from pyrsgis import raster
-import numpy
 
 # define all the file paths to run the test on
 DATA_DIR = 'data/'
