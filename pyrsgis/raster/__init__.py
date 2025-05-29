@@ -8,9 +8,10 @@ import utils
 
 # safely import gdal (support old version)
 try:
-    import gdal
-except:
     from osgeo import gdal
+except:
+    import gdal
+
 
 class _create_ds():
 
