@@ -3,6 +3,7 @@
 """
 Tests for pyrsgis package
 """
+import numpy as np
 
 ''' Tests for pyrsgis.raster
 
@@ -19,13 +20,17 @@ Notes on how to test:
 '''
 
 #import pytest
+import os
 from pyrsgis import raster
+import numpy as np
+import pytest
 
 # define all the file paths to run the test on
 DATA_DIR = 'data/'
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 MULTIBAND_FILEPATH = f'{DATA_DIR}/raster_multiband.tif'
-SINGLEBAND_DISCRETE_FILEPATH = f'{DATA_DIR}/raster_multiband.tif'
-SINGLEBAND_CONTINUOUS_FILEPATH = f'{DATA_DIR}/raster_multiband.tif'
+SINGLEBAND_DISCRETE_FILEPATH = f'{DATA_DIR}/raster_singleband_discrete.tif'
+SINGLEBAND_CONTINUOUS_FILEPATH = f'{DATA_DIR}/raster_singleband_continuous.tif'
 
 class TestPyrsgisRaster:
     ''' Test for raster.read instantiation '''
@@ -43,6 +48,12 @@ class TestPyrsgisRaster:
             assert type(ds.RasterYSize) == type(int())
 
         print('pyrsgis.raster tests ran successfully!')
+
+
+    @pytest.mark.xfail
+    def test_init_t1(self):
+        ds_singleband_continuous, arr_singleband_continuous = raster.read(SINGLEBAND_CONTINUOUS_FILEPATH)
+        assert type(arr_singleband_continuous) == type(np.array())
 
 # call the modules in the class and run the tests
 TestPyrsgisRaster().test_init_t0()
