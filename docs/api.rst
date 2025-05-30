@@ -1,10 +1,5 @@
 .. _api_ref:
 
-.. automodule:: pyrsgis
-
-.. currentmodule:: pyrsgis
-
-
 pyrsgis API reference
 ======================
 
@@ -16,7 +11,7 @@ Reading and exporting GeoTIFFs
 
     pyrsgis.raster.read
     pyrsgis.raster.export
-	
+
 Clipping a raster
 -----------------
 
@@ -28,7 +23,7 @@ Clipping a raster
     pyrsgis.raster.trim
     pyrsgis.raster.trim_array
     pyrsgis.raster.trim_file
-	
+
 Shifting a raster
 -----------------
 
@@ -37,7 +32,7 @@ Shifting a raster
 
     pyrsgis.raster.shift
     pyrsgis.raster.shift_file
-	
+
 Reshaping GeoTIFF array for statistical analysis
 ------------------------------------------------
 
@@ -48,7 +43,7 @@ Reshaping GeoTIFF array for statistical analysis
     pyrsgis.convert.table_to_array
     pyrsgis.convert.raster_to_csv
     pyrsgis.convert.csv_to_raster
-	
+
 Creating image chips for deep learning
 --------------------------------------
 
@@ -58,7 +53,7 @@ Creating image chips for deep learning
     pyrsgis.ml.array_to_chips
     pyrsgis.ml.array2d_to_chips
     pyrsgis.ml.raster_to_chips
-	
+
 Generating northing and easting raster
 --------------------------------------
 
@@ -69,4 +64,3 @@ Generating northing and easting raster
     pyrsgis.raster.north_east_coordinates
     pyrsgis.raster.northing
     pyrsgis.raster.easting
-

@@ -11,7 +11,7 @@ setuptools.setup(
     version="0.4.1",
     author="Pratyush Tripathy",
     author_email="pratkrt@gmail.com",
-    description="A package to read, process and export GeoTIFFs.",
+    description="A Python package for remote sensing and GIS applications.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/PratyushTripathy/pyrsgis",

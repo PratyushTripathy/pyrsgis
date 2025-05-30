@@ -1,0 +1,13 @@
+word.txt
+*word.txt
+.idea/
+*.xml
+*.pyc
+.DS_Store
+.iml
+docs/generated/
+docs/_build/
+*.pyc
+dist/
+build/
+*.egg-info/

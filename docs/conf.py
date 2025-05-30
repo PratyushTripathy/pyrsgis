@@ -1,56 +1,44 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+# conf.py -- Sphinx configuration for pyrsgis documentation
+
+import os
+import sys
+from unittest import mock
 
 # -- Path setup --------------------------------------------------------------
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import os, sys
-autodoc_mock_imports = ['mock', 'sphinx_bootstrap_theme', 'sklearn']
-
-import mock
-import sphinx_bootstrap_theme
-
-sys.path.insert(0, os.path.abspath('../../'))
+# Add the project root to sys.path for autodoc to find your modules
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
+
 project = 'pyrsgis'
-copyright = '2022, Pratyush Tripathy'
+copyright = '2025, Pratyush Tripathy'
 author = 'Pratyush Tripathy'
 
-# The full version, including alpha/beta/rc tags
+# Extract version dynamically, fallback to parsing __init__.py
 try:
     import pyrsgis
     version = pyrsgis.__version__
-except:
+except Exception:
+    version = "unknown"
     with open('../pyrsgis/__init__.py') as f:
         for line in f:
-            if line.find("__version__") >= 0:
-                version = line.split("=")[1].strip()
-                version = version.strip('"').strip("'")
-                continue
-
+            if "__version__" in line:
+                version = line.split("=")[1].strip().strip('"').strip("'")
+                break
 
 # -- General configuration ---------------------------------------------------
-#sys.path.insert(0, os.path.abspath('../'))
 
+# Mock unavailable or heavy modules for autodoc and RTD
 MOCK_MODULES = [
-    'numpy',
-    'gdal',
-    'scikit-learn',
-    'scikit-image',
-    'pandas']
-
+    "osgeo", "osgeo.gdal", "osgeo.ogr", "osgeo.osr",
+    "sklearn", "sklearn.feature_extraction", "sklearn.ensemble",
+    "skimage", "skimage.filters"
+]
 for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+    sys.modules[mod_name] = mock.MagicMock()
+
+# Sphinx extensions for enhanced docs
 extensions = [
     "IPython.sphinxext.ipython_console_highlighting",
     "matplotlib.sphinxext.plot_directive",
@@ -63,44 +51,37 @@ extensions = [
     "sphinx.ext.viewcode"
 ]
 
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+# Generate .rst files for autosummary directives
+autosummary_generate = True
 
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
+# Paths for custom templates and files to exclude from the build
+templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+# -- HTML output options -----------------------------------------------------
 
-# -- Options for HTML output -------------------------------------------------
+# Use the PyData Sphinx Theme for modern, responsive docs
+html_theme = "pydata_sphinx_theme"
+html_title = f"{project} v{version}"
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
 html_theme_options = {
-    'navbar_title': "pyrsgis",
-    'navbar_sidebarrel': False,
-    'navbar_class': "navbar navbar-inverse",
-    'navbar_fixed_top': "true",
-    'source_link_position': 'footer',
-    'bootstrap_version': "3",
-    'navbar_links': [
-        ("Installation", "installation"),
-        ("API", "api")]
-    }
-    
+    "logo": {"text": "pyrsgis"},
+    "show_nav_level": 2,          # Sidebar: expand 2 levels of toctree
+    "navigation_depth": 4,        # Max depth of sidebar navigation
+    "navbar_start": ["navbar-logo", "navbar-nav"],  # Left: logo + nav links
+    "navbar_end": ["theme-switcher", "navbar-icon-links"],  # Right: theme switcher
+    # More options: https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/configuration.html
+}
 
-html_theme = 'bootstrap'
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
-html_title = "%s v%s Documentation" % ('pyrsgis', version)
+# Optional: use a logo image instead of just text (put your logo in _static/)
+# html_logo = "_static/pyrsgis_logo.png"
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
+# -- Misc options ------------------------------------------------------------
+
+# Help builder for HTML docs
 htmlhelp_basename = 'pyrsgisdoc'
 
-# add this dummy function
+# Dummy linkcode (enable for code linking to GitHub if desired)
 def linkcode_resolve(domain, info):
     return None
 

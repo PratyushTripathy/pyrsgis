@@ -1,0 +1,10 @@
+name: pyrsgis
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - gdal
+  - numpy
+  - pandas
+  - pytest
+  - scikit-learn

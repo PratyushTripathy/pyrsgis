@@ -1,0 +1,27 @@
+name: pyrsgis
+version: 0.4.2b1
+sphinx:
+  configuration: docs/conf.py
+channels:
+  - default
+  - conda-forge
+dependencies:
+  - python
+  - pip
+  - pytest
+  - ipykernel
+  - gdal
+  - numpy
+  - pandas
+  - pytest
+  - scikit-learn
+  - pip:
+    - playsound
+    - Sphinx
+    - numpydoc>=1.8.0
+    - nbsphinx
+    - IPython
+    - readthedocs-sphinx-search>=0.3.2
+    - pydata-sphinx-theme>=0.16.1
+    - jupyter-sphinx
+    - sphinx-copybutton
