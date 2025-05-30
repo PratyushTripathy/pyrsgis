@@ -1,9 +1,8 @@
 [project]
 name = "pyrsgis"
-version = "2025.4.2"
-description = "A Python package for remote sensing and GIS analysis."
+version = "0.4.2"
+description = "A Python package for remote sensing and GIS analysis"
 readme = "README.md"
-license = { text = "Apache-2.0" }
 license = { text = "MIT" }
 authors = [
   { name = "Pratyush Tripathy", email = "pratkrt@gmail.com" }
@@ -16,7 +15,6 @@ dependencies = [
 ]
 
 classifiers = [
-  "License :: OSI Approved :: Apache Software License",
   "License :: OSI Approved :: MIT License",
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",

@@ -1,6 +1,6 @@
 # This environment includes all the required packages for this repo including running the test suite.
 name: pyrsgis
-version: 2025.5.1
+version: 0.4.2
 channels:
   - conda-forge
   - defaults
