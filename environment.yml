@@ -1,0 +1,15 @@
+name: pyrsgis
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - gdal
+  - pytest
+  - pip
+  - pip:
+      - matplotlib-scalebar
+      - sphinx-bootstrap-theme
