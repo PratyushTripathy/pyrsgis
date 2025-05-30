@@ -1207,44 +1207,50 @@ def fragment_raster(filename, nrows, ncols, outdir=None, prefix=None):
 
     Parameters
     ----------
-    filename        : string
-                      Path to the input raster file.
+    filename : string
+        Path to the input raster file.
 
-    nrows           : integer
-                      No. of rows of the expected grid.
+    nrows : integer
+        No. of rows of the expected grid.
 
-    ncols           : string
-                      No. of cols of the expected grid.
+    ncols : string
+        No. of cols of the expected grid.
 
-    outdir          : string (optional)
-                      Output directory where files will be stored. If not specified, the clipped rasters will be exported in the same directory as the input file. Note that the output directory should exist, this function will not generate the output directory.
+    outdir : string, optional
+        Output directory where files will be stored. If not specified, the clipped rasters will be
+        exported in the same directory as the input file. Note that the output directory should exist,
+        this function will not generate the output directory.
 
-    prefix          : string (optional)
-                      If specified, the prefix will be used for clipped rasters files. Otherwise, the input file name will be used.
+    prefix : string, optional
+        If specified, the prefix will be used for clipped rasters files. Otherwise, the input file name will be used.
 
     Returns
     -------
-    exported_files_list   : list
-                            A list containing path to all the exported files.
+    exported_files_list : list
+        A list containing path to all the exported files.
 
     Examples
     --------
-    >>> from pyrsgis import raster
-    >>> infile = r'E:/path_to_your_file/your_file.tif'
-    >>> outdir = r'E:/path_to_output_directory/clipped_images'
-    >>> exported_files = raster.fragment_raster(infile, nrows=3, ncols=5, outdir=outdir, prefix='ClippedSample')
-    >>> print('Following files were exported:\n', '\n'.join(exported_files))
-    Following files were exported:
-    E:/path_to_output_directory/clipped_images/ClippedSample_1_1.tif
-    E:/path_to_output_directory/clipped_images/ClippedSample_2_1.tif
-    E:/path_to_output_directory/clipped_images/ClippedSample_3_1.tif
-    .
-    .
-    E:/path_to_output_directory/clipped_images/ClippedSample_3_3.tif
-    E:/path_to_output_directory/clipped_images/ClippedSample_4_3.tif
-    E:/path_to_output_directory/clipped_images/ClippedSample_5_3.tif
+    .. code-block:: python
 
+        from pyrsgis import raster
+        infile = r'E:/path_to_your_file/your_file.tif'
+        outdir = r'E:/path_to_output_directory/clipped_images'
+        exported_files = raster.fragment_raster(infile, nrows=3, ncols=5, outdir=outdir, prefix='ClippedSample')
+        print('Following files were exported:')
+        print('\\n'.join(exported_files))
+
+    Example output:
+
+    .. code-block:: text
+
+        Following files were exported:
+        E:/path_to_output_directory/clipped_images/ClippedSample_1_1.tif
+        E:/path_to_output_directory/clipped_images/ClippedSample_2_1.tif
+        ...
+        E:/path_to_output_directory/clipped_images/ClippedSample_5_3.tif
     """
+
 
     # resolve the output file name
     if prefix == None:

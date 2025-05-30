@@ -1,21 +1,15 @@
-# .readthedocs.yaml
-# Read the Docs configuration file
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
-
-# Required
 version: 2
 
-# Set the version of Python and other tools you might need
 build:
   os: ubuntu-22.04
-    
-# Build documentation in the docs/ directory with Sphinx
+  tools:
+    python: "3.11"
+  environment: docs/rtd_env.yml
+
 sphinx:
   configuration: docs/conf.py
   fail_on_warning: false
 
-mamba:
-  environment: docs/rtd_env.yml
-
-# Additional formats to build your docs
-formats: all
+formats:
+  - pdf
+  - epub

@@ -1,20 +1,23 @@
 # Minimal makefile for Sphinx documentation
-#
 
-# You can set these variables from the command line, and also
-# from the environment for the first two.
+# These variables can be set from the command line or environment
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
 
-# Put it first so that "make" without argument is like "make help".
+# Default target: show help
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
-
-# Catch-all target: route all unknown targets to Sphinx using the new
-# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+# Main Sphinx build targets (html, latexpdf, etc.)
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+# Custom target to generate API .rst files automatically
+.PHONY: apidoc
+apidoc:
+	@echo "Current directory is: $$(pwd)"
+	@ls generated/pyrsgis*
+	@rm -v generated/pyrsgis.rst generated/pyrsgis.raster.rst generated/pyrsgis.convert.rst generated/pyrsgis.ml.rst generated/pyrsgis.utils.rst || true
+	@sphinx-apidoc -o generated ../pyrsgis --module-first --separate --no-toc ../pyrsgis/tests/*

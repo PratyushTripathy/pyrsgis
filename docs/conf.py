@@ -26,8 +26,15 @@ except:
 # -- General configuration ---------------------------------------------------
 
 # Mock heavy or unavailable modules
-for mod in ['gdal', 'scikit-learn', 'scikit-image']:
-    sys.modules[mod] = mock.Mock()
+MOCK_MODULES = [
+    "osgeo", "osgeo.gdal", "osgeo.ogr", "osgeo.osr",
+    "sklearn", "sklearn.feature_extraction", "sklearn.ensemble",
+    "skimage", "skimage.filters"
+]
+
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = mock.MagicMock()
+
 
 extensions = [
     "IPython.sphinxext.ipython_console_highlighting",
@@ -62,6 +69,8 @@ html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 html_title = f"{project} v{version}"
 htmlhelp_basename = 'pyrsgisdoc'
+
+autosummary_generate = True
 
 def linkcode_resolve(domain, info):
     return None

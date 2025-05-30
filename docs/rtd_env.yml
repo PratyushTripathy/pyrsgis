@@ -1,0 +1,23 @@
+# This environment includes all the required packages for this repo including running the test suite.
+name: pyrsgis
+version: 2025.5.1
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python            # unpinned for flexibility
+  - pip
+  - pytest
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - gdal
+  - sphinx
+  - numpydoc
+  - ipython
+  - sphinx-bootstrap-theme
+  - pip:
+      - matplotlib-scalebar
+
