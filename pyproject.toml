@@ -3,7 +3,7 @@ name = "pyrsgis"
 version = "0.4.2b1"
 description = "A Python package for remote sensing and GIS applications"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
   { name = "Pratyush Tripathy", email = "pratkrt@gmail.com" }
 ]
