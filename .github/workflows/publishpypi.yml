@@ -28,11 +28,11 @@ jobs:
       run: |
         unzip -p dist/*.whl *.dist-info/METADATA | grep license || true
 
- - name: Inspect sdist PKG-INFO
-   run: |
-     tar -xzf dist/*.tar.gz
-     grep license-file */PKG-INFO || true
-     grep license */PKG-INFO || true
+    - name: Inspect sdist PKG-INFO
+      run: |
+        tar -xzf dist/*.tar.gz
+        grep license-file */PKG-INFO || true
+        grep license */PKG-INFO || true
 
     - name: Clean build artifacts
       run: rm -rf build dist *.egg-info
