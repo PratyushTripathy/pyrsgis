@@ -8,3 +8,6 @@ word.txt
 docs/generated/
 docs/_build/
 *.pyc
+dist/
+build/
+*.egg-info/
