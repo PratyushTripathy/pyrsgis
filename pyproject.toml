@@ -1,7 +1,7 @@
 [project]
 name = "pyrsgis"
-version = "0.4.2"
-description = "A Python package for remote sensing and GIS analysis"
+version = "0.4.2b1"
+description = "A Python package for remote sensing and GIS applications"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [

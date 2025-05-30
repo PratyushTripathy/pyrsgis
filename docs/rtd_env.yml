@@ -1,23 +1,27 @@
-# This environment includes all the required packages for this repo including running the test suite.
 name: pyrsgis
-version: 0.4.2
+version: 0.4.2b1
+sphinx:
+  configuration: docs/conf.py
 channels:
+  - default
   - conda-forge
-  - defaults
-
 dependencies:
-  - python            # unpinned for flexibility
+  - python
   - pip
   - pytest
+  - ipykernel
+  - gdal
   - numpy
   - pandas
-  - matplotlib
+  - pytest
   - scikit-learn
-  - gdal
-  - sphinx
-  - numpydoc
-  - ipython
-  - sphinx-bootstrap-theme
   - pip:
-      - matplotlib-scalebar
-
+    - playsound
+    - Sphinx
+    - numpydoc>=1.8.0
+    - nbsphinx
+    - IPython
+    - readthedocs-sphinx-search>=0.3.2
+    - pydata-sphinx-theme>=0.16.1
+    - jupyter-sphinx
+    - sphinx-copybutton

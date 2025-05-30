@@ -1,5 +1,3 @@
-.. pyrsgis documentation master file, created by
-   sphinx-quickstart on Sun Jul 11 20:41:09 2021.
 
 pyrsgis: A Python package to read, process and export GeoTIFFs.
 ===============================================================
@@ -23,4 +21,4 @@ a pull request on the GitHub repo. For more information, write to: pratkrt@gmail
    :caption: Contents:
 
    Installation <installation>
-   API <api>
+   API reference <api>
