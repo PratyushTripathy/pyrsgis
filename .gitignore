@@ -5,3 +5,5 @@ word.txt
 *.pyc
 .DS_Store
 .iml
+docs/_build/*
+*.pyc
