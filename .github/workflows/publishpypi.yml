@@ -24,6 +24,10 @@ jobs:
         python -c "import setuptools; print('setuptools', setuptools.__version__)"
         python -c "import wheel; print('wheel', wheel.__version__)"
 
+    - name: Inspect wheel METADATA
+      run: |
+        unzip -p dist/*.whl *.dist-info/METADATA | grep license || true
+
     - name: Clean build artifacts
       run: rm -rf build dist *.egg-info
 
