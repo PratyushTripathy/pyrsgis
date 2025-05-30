@@ -8,5 +8,3 @@ name = 'pyrsgis'
 __version__ = "2025.4.2"
 doc_address = r'https://pyrsgis.readthedocs.io/en/master/'
 
-#Importing all functions from beta
-#from .beta import *
