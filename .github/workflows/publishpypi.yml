@@ -15,24 +15,7 @@ jobs:
 
     - name: Upgrade build tools
       run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade setuptools wheel build twine
-
-    - name: Print build tool versions
-      run: |
-        python -m pip --version
-        python -c "import setuptools; print('setuptools', setuptools.__version__)"
-        python -c "import wheel; print('wheel', wheel.__version__)"
-
-    - name: Inspect wheel METADATA
-      run: |
-        unzip -p dist/*.whl *.dist-info/METADATA | grep license || true
-
-    - name: Inspect sdist PKG-INFO
-      run: |
-        tar -xzf dist/*.tar.gz
-        grep license-file */PKG-INFO || true
-        grep license */PKG-INFO || true
+        python -m pip install --upgrade pip setuptools wheel build twine
 
     - name: Clean build artifacts
       run: rm -rf build dist *.egg-info
