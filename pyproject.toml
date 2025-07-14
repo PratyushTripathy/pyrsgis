@@ -1,7 +1,3 @@
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["pyrsgis*"]
-
 [project]
 name = "pyrsgis"
 version = "0.4.2b1"
@@ -24,6 +20,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent"
 ]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["pyrsgis*"]
