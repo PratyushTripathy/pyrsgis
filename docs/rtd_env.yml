@@ -8,16 +8,9 @@ channels:
 dependencies:
   - python
   - pip
-  - pytest
   - ipykernel
-  - gdal
-  - numpy
-  - pandas
-  - pytest
-  - scikit-learn
+  - Sphinx
   - pip:
-    - playsound
-    - Sphinx
     - numpydoc>=1.8.0
     - nbsphinx
     - IPython
@@ -25,3 +18,4 @@ dependencies:
     - pydata-sphinx-theme>=0.16.1
     - jupyter-sphinx
     - sphinx-copybutton
+    - git+https://github.com/PratyushTripathy/pyrsgis@master
