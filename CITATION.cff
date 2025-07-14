@@ -1,0 +1,12 @@
+cff-version: 0.4.2b1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Tripathy"
+    given-names: "Pratyush"
+    orcid: "https://orcid.org/0000-0002-9278-8995"
+
+title: "PyRSGIS: A Python package for remote sensing and GIS applications"
+version: 0.4.2b1
+date-released: 2025-07-14
+doi: 10.5281/zenodo.2552933
+url: "https://github.com/PratyushTripathy/PyRSGIS"

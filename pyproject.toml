@@ -7,7 +7,7 @@ name = "pyrsgis"
 version = "0.4.2b1"
 description = "A Python package for remote sensing and GIS applications"
 readme = "README.md"
-license = { text = "MIT" }
+license = {text="MIT"}
 authors = [
   { name = "Pratyush Tripathy", email = "pratkrt@gmail.com" }
 ]
@@ -17,10 +17,6 @@ dependencies = [
   "matplotlib",
   "gdal>=3.0.0"
 ]
-
-[tool.setuptools]
-license-files = []
-
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
@@ -28,11 +24,21 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent"
 ]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyrsgis*"]
+exclude = ["media*", "docs*", "dist*"]
+
+[tool.setuptools.package-data]
+"pyrsgis" = ["pyrsgis/tests/data*"]
 
 [project.urls]
 Homepage = "https://github.com/PratyushTripathy/pyrsgis"
 Issues = "https://github.com/PratyushTripathy/pyrsgis/issues"
 
 [build-system]
-requires = ["setuptools>=69.0.2", "wheel"]
+requires = ["setuptools>=77.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+license-files = []
