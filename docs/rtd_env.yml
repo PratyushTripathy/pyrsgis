@@ -1,21 +1,19 @@
-name: pyrsgis
-version: 0.4.2b1
-sphinx:
-  configuration: docs/conf.py
+name: pyrsgis-docs
 channels:
-  - default
   - conda-forge
 dependencies:
-  - python
+  - python=3.11           # matches your requires-python
+  - gdal=3.10.*           # GDAL & its native libs
+  - numpy                 # common dep for your package
+  - matplotlib            # you enable matplotlib.sphinxext.plot_directive
+  - ipython               # you enable IPython console highlighting
+  # ---- Sphinx stack ----
+  - sphinx>=7
+  - pydata-sphinx-theme>=0.16.1
+  - numpydoc>=1.8.0
+  - myst-parser>=2
+  - nbsphinx
+  - jupyter-sphinx
+  - sphinx-copybutton
+  - readthedocs-sphinx-search>=0.3.2
   - pip
-  - ipykernel
-  - Sphinx
-  - pip:
-    - numpydoc>=1.8.0
-    - nbsphinx
-    - IPython
-    - readthedocs-sphinx-search>=0.3.2
-    - pydata-sphinx-theme>=0.16.1
-    - jupyter-sphinx
-    - sphinx-copybutton
-    - git+https://github.com/PratyushTripathy/pyrsgis@master

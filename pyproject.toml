@@ -11,6 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
   "numpy",
   "matplotlib",
+  "gdal>=3.0.0"
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -19,11 +20,6 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Operating System :: OS Independent"
-]
-
-[project.optional-dependencies]
-geo = [
-  "gdal>=3.0.0",
 ]
 
 [tool.setuptools.packages.find]
