@@ -1,0 +1,10 @@
+sphinx>=7
+myst-parser>=2
+pydata-sphinx-theme>=0.16.1
+numpydoc>=1.8.0
+sphinx-copybutton
+readthedocs-sphinx-search>=0.3.2
+nbsphinx
+jupyter-sphinx
+ipython
+matplotlib
