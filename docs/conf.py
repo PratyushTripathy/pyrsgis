@@ -9,7 +9,8 @@ from importlib.metadata import version as pkg_version, PackageNotFoundError
 # -- Path setup --------------------------------------------------------------
 # Add the project root to sys.path so autodoc finds your modules
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+SRC = ROOT / "src"
+sys.path.insert(0, str(SRC if SRC.exists() else ROOT))
 
 # -- Project information -----------------------------------------------------
 project = "pyrsgis"
